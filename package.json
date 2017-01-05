@@ -5,9 +5,9 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel --out-dir obj src && jspm build obj/main.js dist/main.js --minify --format umd --global-name Task",
-    "build-dev": "babel --out-dir obj src && jspm bundle obj/main.js - '[obj/**/*]' + css dist/dev-bundle.js",
-    "watch": "babel --watch --out-dir obj src",
+    "build": "babel --out-dir obj src && jspm build obj/index.js dist/index.js --minify --format umd --global-name Task",
+    "build-dev": "babel --source-maps=true --out-dir obj src && jspm bundle --no-mangle --dev obj/index.js - '[obj/**/*]' + css dist/dev-bundle.js",
+    "watch": "babel --watch --source-maps=true --out-dir obj src",
     "serve": "http-server -c-1 ."
   },
   "repository": {
@@ -37,7 +37,11 @@
       "css": "github:systemjs/plugin-css@^0.1.32",
       "epic-component": "npm:epic-component@^0.3.1",
       "epic-linker": "npm:epic-linker@^1.1.0",
+      "flatten": "npm:flatten@^1.0.2",
       "font-awesome": "npm:font-awesome@^4.7.0",
+      "intersperse": "npm:intersperse@^1.0.0",
+      "node-range": "npm:node-range@^0.1.0",
+      "normalize.css": "npm:normalize.css@^5.0.0",
       "rc-tooltip": "npm:rc-tooltip@^3.4.2",
       "react-bootstrap": "npm:react-bootstrap@^0.30.7",
       "react-redux": "npm:react-redux@^5.0.1"

@@ -193,7 +193,6 @@ SystemJS.config({
     "core-js": "npm:core-js@2.4.1",
     "graceful-fs": "npm:graceful-fs@4.1.11",
     "module": "npm:jspm-nodelibs-module@0.2.0",
-    "normalize.css": "github:necolas/normalize.css@5.0.0",
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.17"
   }
 });
@@ -205,6 +204,10 @@ SystemJS.config({
     "github:*/*.json"
   ],
   map: {
+    "intersperse": "npm:intersperse@1.0.0",
+    "flatten": "npm:flatten@1.0.2",
+    "node-range": "npm:node-range@0.1.0",
+    "normalize.css": "npm:normalize.css@5.0.0",
     "alkindi-task-lib": "npm:alkindi-task-lib@1.1.2",
     "assert": "npm:jspm-nodelibs-assert@0.2.0",
     "babel-runtime": "npm:babel-runtime@6.20.0",

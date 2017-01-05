@@ -7,12 +7,12 @@ import Task from './task';
 import AnswerDialog from './answer_dialog';
 import {setupTools, makeRootScope} from './tools/index';
 
-import 'normalize.css';
-import 'font-awesome/css/font-awesome.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'rc-tooltip/assets/bootstrap.css';
-import './platform.css';
-import './style.css';
+import 'normalize.css!';
+import 'font-awesome/css/font-awesome.css!';
+import 'bootstrap/dist/css/bootstrap.css!';
+import 'rc-tooltip/assets/bootstrap.css!';
+import '2017-fr-al-02-substitution.css/platform.css!';
+import '2017-fr-al-02-substitution.css/style.css!';
 
 export function run (options) {
    hostTask(options, function* (deps) {
