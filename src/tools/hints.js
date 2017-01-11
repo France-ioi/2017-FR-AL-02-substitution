@@ -2,7 +2,10 @@ import React from 'react';
 import EpicComponent from 'epic-component';
 import range from 'node-range';
 import classnames from 'classnames';
-import {OkCancel, Python, Tooltip, Variables} from 'alkindi-task-lib/ui';
+import OkCancel from 'alkindi-task-lib/ui/ok_cancel';
+import Tooltip from 'alkindi-task-lib/ui/tooltip';
+import Python from 'alkindi-task-lib/ui/python';
+import Variables from 'alkindi-task-lib/ui/variables';
 
 import {getInversePermutation}  from './common';
 

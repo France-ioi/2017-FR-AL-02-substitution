@@ -1,7 +1,8 @@
 import React from 'react';
 import EpicComponent from 'epic-component';
 import classnames from 'classnames';
-import {Python, Variables} from 'alkindi-task-lib/ui';
+import Python from 'alkindi-task-lib/ui/python';
+import Variables from 'alkindi-task-lib/ui/variables';
 
 import {bigramsFromText, applyPermutation, renderCell} from './common';
 

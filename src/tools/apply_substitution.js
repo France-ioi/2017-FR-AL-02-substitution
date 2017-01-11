@@ -1,6 +1,7 @@
 import React from 'react';
 import EpicComponent from 'epic-component';
-import {Python, Variables} from 'alkindi-task-lib/ui';
+import Python from 'alkindi-task-lib/ui/python';
+import Variables from 'alkindi-task-lib/ui/variables';
 
 import {renderText} from './common';
 
