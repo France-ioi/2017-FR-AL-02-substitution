@@ -129,7 +129,7 @@
   float: left;
 }
 .adfgx-wire-cell {
-  background-image: url("adfgx/traits.png");
+  background-image: url("./traits.png");
   background-repeat: no-repeat;
 }
 .adfgx-wire-cell-a {background: transparent;}

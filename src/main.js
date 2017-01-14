@@ -1,21 +1,24 @@
 
 import {defineSelector, defineView, include} from 'epic-linker';
 import {hostTask} from 'alkindi-task-lib';
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import WorkspaceBuilder from 'alkindi-task-lib/workspace';
 
 import Task from './task';
 import AnswerDialog from './answer_dialog';
 import {setupTools, makeRootScope} from './tools/index';
 
-import 'normalize.css!';
-import 'font-awesome/css/font-awesome.css!';
-import 'bootstrap/dist/css/bootstrap.css!';
-import 'rc-tooltip/assets/bootstrap.css!';
-import '2017-fr-al-02-substitution.css/platform.css!';
-import '2017-fr-al-02-substitution.css/style.css!';
+import 'normalize.css';
+import 'font-awesome/css/font-awesome.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'rc-tooltip/assets/bootstrap.css';
+import './platform.css';
+import './style.css';
 
-export function run (options) {
-   hostTask(options, function* (deps) {
+export function run (container, options) {
+   options = {...options, wrapper: App => DragDropContext(HTML5Backend)(App)};
+   hostTask(container, options, function* (deps) {
 
       /* The Task view displays the task to the contestant.
          The standard 'TaskSelector' selector supplies the task object as a
