@@ -1,5 +1,7 @@
 
-module.exports = function () {
+module.exports = generate;
+
+function generate (params, seed, callback) {
   const task = {
     substitution_grid: [
       [null,null,null,null,null],
@@ -13,14 +15,18 @@ module.exports = function () {
   };
   const full_task = Object.assign({}, task, {
     hints: {
-     substitution_grid: [
-      [0, 7, 21, 13, 17],
-      [11, 8, 5, 19, 3],
-      [15, 10, 22, 12, 14],
-      [20, 2, 1, 16, 18],
-      [9, 6, 23, 4, 24]
-    ],
-    permutation: [5, 2, 0, 4, 1, 3]
-  }});
-  return {task, full_task};
+      substitution_grid: [
+        [0, 7, 21, 13, 17],
+        [11, 8, 5, 19, 3],
+        [15, 10, 22, 12, 14],
+        [20, 2, 1, 16, 18],
+        [9, 6, 23, 4, 24]
+      ],
+      // 6 3 1 5 2 4
+      // E A T I S N R U O L D C V M P F B X G H Q J Y Z K
+      permutation: [5, 2, 0, 4, 1, 3],
+      clear_text: "NOTREPLANCOMMENCEDEFACONFORMIDABLEETJETIENSAVOUSFELICITERVOICIDANSLESGRANDESLIGNESCEQUILRESTEAFAIREPOURTOUTELETAPESUIVANTEDENOTREPLANLETAPESUIVANTECONSISTEAINITIERUNEBAISSEDELOFFREDESMETAUXDETERRERAREAFINDAVOIRAINSIUNEHAUSSESUBSTANTIELLEETAVANTAGEUSEDUPRIXDELACTIONNOUSAVONSENTERINELALISTESUIVANTEDEMETAUXDETERRERARELEUROPIUMLYTTERBIUMETLETHULIUMVOUSMAXIMISEREZVOSGAINSALAPLACEBOURSIEREDETORONTOACHETERTOUTDESUITEDESACTIONSDECESMETAUXPOURAVOIRUNPLUSGRANDBENEFICE"
+    }
+  });
+  callback(null, {task, full_task});
 };

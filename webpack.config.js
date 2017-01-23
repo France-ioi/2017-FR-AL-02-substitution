@@ -5,7 +5,7 @@ const SRC = path.resolve(__dirname, "src");
 const config = module.exports = {
   entry: {
     vendor: [],
-    index: ['./src/main.js']
+    index: ['./src/index.js']
   },
   output: {
     path: path.join(__dirname, 'build'),
