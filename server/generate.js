@@ -1,32 +1,54 @@
 
+const seedrandom = require('seedrandom');
+const shuffle = require('shuffle-array');
+const range = require('node-range');
+
+const dictionary = require('./words');
+
 module.exports = generate;
 
 function generate (params, seed, callback) {
-  const task = {
-    substitution_grid: [
-      [null,null,null,null,null],
-      [null,null,null,null,null],
-      [null,null,null,null,null],
-      [null,null,null,null,null],
-      [null,null,null,null,null]
-    ],
-    permutation: [null, null, null, null, null, null],
-    cipher_text: "GAGGGXAGXXAGGGFXADXDXXXAGDGGDGGAGAXGGGDGXXGAGAAAGGXADGGAXGFGXGFGXAAGFXGADXXXGGGAGDXADGDXXAGGXGAGAAGGAXGGXGXAFGDGGAAXGDXGXAXAAFXGXXGAGXAGDXADXDGAAXXAADGGFGFXAFXXDFFDGXXXAGXGXFDAXADDAGGADDAFDDXFGAXAADDAGADFDXADGGGDFAXXGXAAXDADDDXGXGADDDAAGDADADAGFXXAAGGADXDFDAADADDDGFDADAGFDAAXADDXGDXDFFAXFDGXGDAXGDFGAAFGAGXGAADGFGXGDFAXXDGFDDDAGADXAGXGGDGADFAGDAGADXDFADXDAGGDDDAXDXDDDFADXXADDFAGAAGGDDDXADXXFFDDAGAGDDDDXDADXGXAAXGFFDAGDDDFGAFXXGDAFGFGAXADGDDDGDXGFDXXGFADAGADADDFAFADAAADDDDAAGDDADDGGAXDXXDXXAXGFXDXDADFXAXFGAXAGADXAAGXDXGDFDAAAAAAAGAGGGAXXAAXGGDXGFFAAAAXDDGAXFADXXAXFGXXDXXGGFFDGXFAGAAGAXDFAAXAGXDDADGGFAFAFGDXAXDXGXADGDGDFGAGADXXFDGFDAADGXDXGAXADAXAAAXFGGGAGGGDGDXGDGXGDGAFXGAXGGXFXXAXGAXAGGAGFGGGAFAGGAFXGDADGDGXGAGXXGAAGGXAGGAGAAGGXXDAADXXXGXGDGGGXGGDXXGGAXADGAXXGDXGAXGGFXXDFGGGAAGDGXDGGXXAGDAXGFXXGGGAAAGGXAAAXFGXDGGDAFXXXXGGAGXXGDADDDGAGFADAGAAAXXXADGXXGGGAXXFGGGFGXAAXDAGFGADDFXFDXFDGAAGADGGXXDGXXAGXGGGXGFAFXAXAFGD"
-  };
-  const full_task = Object.assign({}, task, {
-    hints: {
-      substitution_grid: [
-        [0, 7, 21, 13, 17],
-        [11, 8, 5, 19, 3],
-        [15, 10, 22, 12, 14],
-        [20, 2, 1, 16, 18],
-        [9, 6, 23, 4, 24]
-      ],
-      // 6 3 1 5 2 4
-      // E A T I S N R U O L D C V M P F B X G H Q J Y Z K
-      permutation: [5, 2, 0, 4, 1, 3],
-      clear_text: "NOTREPLANCOMMENCEDEFACONFORMIDABLEETJETIENSAVOUSFELICITERVOICIDANSLESGRANDESLIGNESCEQUILRESTEAFAIREPOURTOUTELETAPESUIVANTEDENOTREPLANLETAPESUIVANTECONSISTEAINITIERUNEBAISSEDELOFFREDESMETAUXDETERRERAREAFINDAVOIRAINSIUNEHAUSSESUBSTANTIELLEETAVANTAGEUSEDUPRIXDELACTIONNOUSAVONSENTERINELALISTESUIVANTEDEMETAUXDETERRERARELEUROPIUMLYTTERBIUMETLETHULIUMVOUSMAXIMISEREZVOSGAINSALAPLACEBOURSIEREDETORONTOACHETERTOUTDESUITEDESACTIONSDECESMETAUXPOURAVOIRUNPLUSGRANDBENEFICE"
-    }
-  });
+  const rng = seedrandom(seed);
+  const cipherSubst = shuffle(range(0, 25).toArray(), {copy: true, rng: rng});
+  const clearText = generateRandomText(rng, 20, params.version === 1 ? ' ' : '');
+  const cipherText = applySubstitution(cipherSubst, clearText);
+  console.log(clearText);
+  console.log(cipherText);
+  const task = {cipherText, hints: {}};
+  const full_task = {params, seed, clearText, cipherText, cipherSubst};
   callback(null, {task, full_task});
 };
+
+function generateRandomText (rng, maxWords, separator) {
+  const minLength = dictionary[0][0].length;
+  const maxLength = dictionary[dictionary.length - 1][0].length;
+  const words = [];
+  while (words.length < maxWords) {
+    const groupIndex = Math.trunc(rng() * (maxLength - minLength + 1));
+    const groupWords = dictionary[groupIndex];
+    const word = groupWords[Math.trunc(rng() * (groupWords.length + 1))];
+    words.push(word);
+  }
+  return words.join(separator);
+}
+
+function applySubstitution (subst, clearText) {
+  const cipher = [];
+  for (let iLetter = 0; iLetter < clearText.length; iLetter++) {
+    const charIndex = clearText.charCodeAt(iLetter) - 65;
+    if (charIndex < 0 || charIndex >= 26) {
+      cipher.push(clearText.charAt(iLetter));
+    } else {
+      cipher.push(String.fromCharCode(65 + subst[charIndex]));
+    }
+  }
+  return cipher.join('');
+}
+
+// Run this module directly with node to test it.
+if (require.main === module) {
+   generate({version: 1}, 42, function (err, result) {
+      if (err) throw err;
+      console.log(result);
+   });
+}
