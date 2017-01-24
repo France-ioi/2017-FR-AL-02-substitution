@@ -30,12 +30,15 @@ export const renderDualText = function (topText, bottomText, wrapping) {
    const clearAlphabet = bottomText.alphabet;
    const clearCells = bottomText.cells;
    const lines = [];
-   let line = [];
-   let wrappingCol = wrapping[1];
+   let line;
+   let wrappingCol = wrapping[0];
+   const lineHeader = <div key={0} className='dualtext-label'><div>{"chiffré"}</div><div>{"clair"}</div></div>;
    for (let iCell = 0; iCell < topCells.length; iCell += 1) {
       if (iCell === wrappingCol) {
-         lines.push(<div key={lines.length} className="dualtext-line">{line}</div>);
-         line = [];
+         if (line) {
+            lines.push(<div key={lines.length} className="dualtext-line">{line}</div>);
+         }
+         line = [lineHeader];
          wrappingCol = wrapping ? wrapping[lines.length + 1] : lines.length * 40;
       }
       line.push(

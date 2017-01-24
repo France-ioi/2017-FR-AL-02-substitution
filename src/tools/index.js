@@ -22,11 +22,11 @@ export default actions => EpicComponent(self => {
   }
 
   function onRequestHint () {
-    self.props.dispatch({type: actions.requestHint});
+    self.props.dispatch({type: actions.requestHint, request: self.props.hintRequest});
   }
 
   self.render = function () {
-    const {task, workspace} = self.props;
+    const {task, workspace, hintRequest} = self.props;
     const cipherText = parseText(cipherAlphabet, task.cipherText);
     const wrapping = getTextWrapping(cipherText, 60);
     const hintSubstitution = getHintSubstitution(cipherAlphabet, clearAlphabet, task.hints);
@@ -34,7 +34,7 @@ export default actions => EpicComponent(self => {
     const clearText = applySubstitution(editedSubstitution, cipherText);
     return (
       <div>
-        <Hints substitution={hintSubstitution} onShowHintRequest={onShowHintRequest} onRequestHint={onRequestHint} />
+        <Hints task={task} substitution={hintSubstitution} onShowHintRequest={onShowHintRequest} onRequestHint={onRequestHint} hintRequest={hintRequest}/>
         <EditSubstitution substitution={editedSubstitution} onReset={onSubstReset} onSwapPairs={onSubstSwapPairs} />
         <DualText topText={cipherText} bottomText={clearText} wrapping={wrapping} />
       </div>

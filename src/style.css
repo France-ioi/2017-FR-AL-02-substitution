@@ -367,3 +367,17 @@ p.hug-bottom {
 .dualtext-line {
   margin-bottom: 6px;
 }
+
+.hintsDialog {
+  float: right;
+}
+
+.dualtext-label, .adfgx-subst-label {
+  font-family: Arial, sans-serif;
+  display: inline-block;
+  width: 50px;
+  line-height: 22px;
+  color: #666;
+  text-align: right;
+  margin-right: 10px;
+}
