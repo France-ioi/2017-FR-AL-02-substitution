@@ -35,8 +35,8 @@ export default actions => EpicComponent(self => {
     return (
       <div>
         <Hints substitution={hintSubstitution} onShowHintRequest={onShowHintRequest} onRequestHint={onRequestHint} />
-        <DualText topText={cipherText} bottomText={clearText} wrapping={wrapping} />
         <EditSubstitution substitution={editedSubstitution} onReset={onSubstReset} onSwapPairs={onSubstSwapPairs} />
+        <DualText topText={cipherText} bottomText={clearText} wrapping={wrapping} />
       </div>
     );
   };
