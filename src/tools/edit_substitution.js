@@ -90,15 +90,17 @@ export default EpicComponent(self => {
             </div>
          );
       };
-      // Button to reset substitution to match order of bigrams frequencies
-      // with order of letter frequencies in french.
+      /* Button to reset substitution to match order of bigrams frequencies with
+         order of letter frequencies in french. */
       return (
          <div className='panel panel-default'>
             <div className='panel-heading'>
                {"substitution"}
             </div>
             <div className='panel-body'>
-               <Button onClick={onReset}>réinitialiser</Button>
+               <div className='pull-right'>
+                  <Button onClick={onReset}>{"réinitialiser"}</Button>
+               </div>
                <div className='grillesSection'>
                   <div className='adfgx-subst'>
                      {mapping.map(renderSubstCell)}

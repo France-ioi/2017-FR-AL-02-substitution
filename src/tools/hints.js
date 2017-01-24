@@ -67,13 +67,13 @@ export default EpicComponent(self => {
         </div>
         <div className='panel-body'>
           <div>
-            <p>{"Substitution de déchiffrage :"}</p>
+            <p className='hug-bottom'>{"Substitution de déchiffrage :"}</p>
             <div className='adfgx-subst'>
               {sourceAlphabet.symbols.map(renderDecipherPair)}
             </div>
           </div>
           <div>
-            <p>{"Substitution de chiffrage :"}</p>
+            <p className='hug-bottom'>{"Substitution de chiffrage :"}</p>
             <div className='adfgx-subst'>
               {targetAlphabet.symbols.map(renderCipherPair)}
             </div>

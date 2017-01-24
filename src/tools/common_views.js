@@ -27,16 +27,18 @@ export const renderCell = function (key, cell, alphabet) {
    }
 };
 
-export const renderText = function (text) {
+export const renderText = function (text, wrapping) {
    const {alphabet, cells} = text;
    const lines = [];
    let line = [];
+   let wrappingCol = wrapping ? wrapping[1] : 40;
    cells.forEach(function (cell, iCell) {
-      line.push(renderCell(iCell, cell, alphabet));
-      if (line.length === 40) {
+      if (iCell === wrappingCol) {
          lines.push(<div key={lines.length} className="adfgx-line">{line}</div>);
          line = [];
+         wrappingCol = wrapping ? wrapping[lines.length + 1] : lines.length * 40;
       }
+      line.push(renderCell(iCell, cell, alphabet));
    });
    if (line.length > 0) {
       lines.push(<div key={lines.length}>{line}</div>)
