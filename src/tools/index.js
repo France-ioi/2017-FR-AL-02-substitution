@@ -34,8 +34,8 @@ export default actions => EpicComponent(self => {
     const clearText = applySubstitution(editedSubstitution, cipherText);
     return (
       <div>
-        <DualText topText={cipherText} bottomText={clearText} wrapping={wrapping} />
         <Hints substitution={hintSubstitution} onShowHintRequest={onShowHintRequest} onRequestHint={onRequestHint} />
+        <DualText topText={cipherText} bottomText={clearText} wrapping={wrapping} />
         <EditSubstitution substitution={editedSubstitution} onReset={onSubstReset} onSwapPairs={onSubstSwapPairs} />
       </div>
     );
