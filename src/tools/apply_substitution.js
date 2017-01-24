@@ -3,21 +3,7 @@ import EpicComponent from 'epic-component';
 import Python from 'alkindi-task-lib/ui/python';
 import Variables from 'alkindi-task-lib/ui/variables';
 
-export const renderText = function (text) {
-   const {alphabet, cells} = text;
-   const lines = [];
-   let line = [];
-   cells.forEach(function (cell, iCell) {
-      line.push(renderCell(iCell, cell, alphabet));
-      if (line.length === 40) {
-         lines.push(<div key={lines.length} className="adfgx-line">{line}</div>);
-         line = [];
-      }
-   });
-   if (line.length > 0)
-      lines.push(<div key={lines.length}>{line}</div>)
-   return <div className='adfgx-text'>{lines}</div>;
-};
+import {renderText} from './common_views';
 
 export const Component = EpicComponent(self => {
 
@@ -49,9 +35,13 @@ export const Component = EpicComponent(self => {
 });
 
 export const compute = function (state, scope) {
-   const {cipheredText, substitution} = scope;
-   const targetCells = cipheredText.cells.map(function (cell) {
-      return substitution.mapping[cell.l];
+   const {inputText, substitution} = scope;
+   const targetCells = inputText.cells.map(function (cell) {
+      if ('rank' in cell) {
+         return substitution.mapping[cell.rank];
+      } else {
+         return cell;
+      }
    });
    scope.outputText = {alphabet: substitution.targetAlphabet, cells: targetCells};
 };

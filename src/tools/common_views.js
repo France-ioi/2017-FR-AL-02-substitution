@@ -1,3 +1,4 @@
+
 import React from 'react';
 import classnames from 'classnames';
 
@@ -17,12 +18,12 @@ export const getQualifierClass = function(qualifier) {
 };
 
 export const renderCell = function (key, cell, alphabet) {
-   if ('c' in cell) {
-      return <span key={key} className="adfgx-cell">{cell.c}</span>;
+   if ('rank' in cell) {
+      const symbol = alphabet.symbols[cell.rank];
+      const classes = classnames(['adfgx-cell', getQualifierClass(cell.qualifier)]);
+      return <span key={key} className={classes}>{symbol}</span>;
    } else {
-      const c0 = alphabet.symbols[cell.l];
-      const q0 = classnames(['adfgx-cell', getQualifierClass(cell.q)]);
-      return <span key={key} className={q0}>{c0}</span>;
+      return <span key={key} className="adfgx-cell">{cell.symbol}</span>;
    }
 };
 

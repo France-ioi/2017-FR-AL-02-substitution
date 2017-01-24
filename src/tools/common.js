@@ -8,18 +8,18 @@ export const makeAlphabet = function (symbols) {
    return {symbols, size, ranks};
 };
 
-export const clearAlphabet = makeAlphabet('ABCDEFGHIJKLMNOPQRSTUVXYZ'.split(''));
+export const clearAlphabet = makeAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
 export const cipherAlphabet = clearAlphabet;
 
-export const cellsFromString = function (text, alphabet, defaultQ) {
+export const cellsFromString = function (text, alphabet, qualifier) {
    const cells = [];
-   for (let iLetter = 0; iLetter < text.length; iLetter++) {
-      const letter = text.charAt(iLetter);
-      const rank = alphabet.ranks[letter];
+   for (let iSymbol = 0; iSymbol < text.length; iSymbol++) {
+      const symbol = text.charAt(iSymbol);
+      const rank = alphabet.ranks[symbol];
       if (rank !== undefined) {
-         cells.push({l: rank, q: defaultQ});
+         cells.push({rank, qualifier});
       } else {
-         cells.push({c: letter});
+         cells.push({symbol});
       }
    }
    return cells;

@@ -2,11 +2,7 @@
 import TextInput from './text_input';
 import Hints from './hints';
 import EditSubstitution from './edit_substitution';
-/*
-import EnumeratePermutations from './enumerate_permutations';
-import ApplyPermutation from './apply_permutation';
 import ApplySubstitution from './apply_substitution';
-*/
 
 import {clearAlphabet, cipherAlphabet} from './common';
 
@@ -46,16 +42,13 @@ export function setupTools (addTool) {
       outputSubstitutionVariable: 'substitutionÉditée'
    });
 
-/*
-
    const iApplySubstitution = addTool(ApplySubstitution, function (scopes, scope) {
-      scope.cipherText = scopes[iApplyPermutation].outputText;
-      scope.substitution = scopes[iFrequencyAnalysis].outputSubstitution;
+      scope.inputText = scopes[iTextInput].outputText;
+      scope.substitution = scopes[iEditSubstitution].outputSubstitution;
    }, {
-      inputTextVariable: 'texteAprèsPermutation',
+      inputTextVariable: 'texteChiffré',
       inputSubstitutionVariable: 'substitutionÉditée',
       outputClearTextVariable: 'texteDéchiffré'
    });
-*/
 
 };
