@@ -45,8 +45,8 @@ export default actions => EpicComponent(self => {
 
 
 function parseText (alphabet, inputText) {
-   const cells = cellsFromString(inputText, alphabet);
-   return {alphabet, cells};
+  const cells = cellsFromString(inputText, alphabet);
+  return {alphabet, cells};
 }
 
 /* Returns an array of wrapping positions in the text. */
@@ -75,86 +75,61 @@ function getTextWrapping (text, maxWidth) {
   return lineStartCols;
 }
 
-const unknownHintCell = {qualifier: 'unknown'};
-function getHintSubstitution (cipherAlphabet, clearAlphabet, hints) {
-  const mapping = cipherAlphabet.symbols.map(_ => unknownHintCell);
-  const reverse = clearAlphabet.symbols.map(_ => unknownHintCell);
-  Object.keys(hints).forEach(function (cipherLetter) {
-    const cipherRank = cipherAlphabet.ranks[cipherLetter];
-    const clearLetter = hints[cipherLetter];
-    const clearRank = clearAlphabet.ranks[clearLetter];
-    mapping[cipherRank] = {qualifier: 'hint', rank: clearRank};
-    reverse[clearRank] = {qualifier: 'hint', rank: cipherRank};
+function getHintSubstitution (sourceAlphabet, targetAlphabet, hints) {
+  /* Start with identity mappings. */
+  const mapping = sourceAlphabet.symbols.map((_, rank) => {return {qualifier: 'unknown'};});
+  const reverse = targetAlphabet.symbols.map((_, rank) => {return {qualifier: 'unknown'};});
+  /* Apply each hint as swapping pairs of letters. */
+  Object.keys(hints).forEach(function (sourceLetter) {
+    const sourceRank = sourceAlphabet.ranks[sourceLetter];
+    const targetLetter = hints[sourceLetter];
+    const targetRank = targetAlphabet.ranks[targetLetter];
+    mapping[sourceRank] = {qualifier: 'hint', rank: targetRank};
+    reverse[targetRank] = {qualifier: 'hint', rank: sourceRank};
+  });
+  /* Set a rank on unknown positions. */
+  sourceAlphabet.symbols.forEach(function (_, sourceRank) {
+    modifySubstitution(mapping, reverse, sourceRank, sourceRank, 'unknown');
+  });
+  targetAlphabet.symbols.forEach(function (_, targetRank) {
+    modifySubstitution(reverse, mapping, targetRank, targetRank, 'unknown');
   });
   return {
     mapping,
     reverse,
-    sourceAlphabet: cipherAlphabet,
-    targetAlphabet: clearAlphabet
+    sourceAlphabet,
+    targetAlphabet
   };
 }
 
+function modifySubstitution (mapping, reverse, sourceRank, targetRank, qualifier) {
+  if (mapping[sourceRank].qualifier === 'unknown') {
+    while (reverse[targetRank].qualifier !== 'unknown') {
+      targetRank = reverse[targetRank].rank;
+    }
+    mapping[sourceRank] = {qualifier, rank: targetRank};
+  }
+}
+
 function editSubstitution (inputSubstitution, editedPairs) {
-   const {sourceAlphabet, targetAlphabet} = inputSubstitution;
-   // Mark symbols in inputSubstitution and editedPairs as used, other target
-   // symbols as unused.
-   const symbolUsed = Array(targetAlphabet.size).fill(false);
-   Object.keys(editedPairs).forEach(function (sourceSymbol) {
-      // Ignore editedPairs that are overridden by a hint.
-      const sourceRank = sourceAlphabet.ranks[sourceSymbol];
-      if (inputSubstitution.mapping[sourceRank].qualifier === 'unknown') {
-         const targetRank = targetAlphabet.ranks[editedPairs[sourceSymbol]];
-         symbolUsed[targetRank] = 'edit';
-      }
-   });
-   inputSubstitution.mapping.forEach(function (cell) {
-      if (cell.qualifier === 'hint') {
-         symbolUsed[cell.rank] = 'hint';
-      }
-   });
-   // console.log(symbolUsed);
-   let nextUnusedTargetRank = 0;
-   function getNextUnusedTargetRank () {
-      // Move to the next unused rank.
-      while (symbolUsed[nextUnusedTargetRank]) {
-         nextUnusedTargetRank += 1;
-      }
-      // This is our result.
-      const result = nextUnusedTargetRank;
-      // Skip past this rank for next call.
-      nextUnusedTargetRank += 1;
-      return result;
-   }
-   // Generate a mapping using hints+editedPairs and filling with unused symbols.
-   const mapping = inputSubstitution.mapping.slice();
-   sourceAlphabet.symbols.forEach(function (sourceSymbol, sourceRank) {
-      if (mapping[sourceRank].qualifier !== 'unknown') {
-         return;
-      }
-      let targetRank, qualifier;
-      if (sourceSymbol in editedPairs) {
-         // If there is a hint that maps to this letter, ignore the edit.
-         targetRank = targetAlphabet.ranks[editedPairs[sourceSymbol]];
-         if (symbolUsed[targetRank] !== 'hint') {
-            qualifier = 'edit';
-         }
-      }
-      if (qualifier === undefined) {
-         targetRank = getNextUnusedTargetRank();
-         qualifier = 'unknown';
-      }
-      mapping[sourceRank] = {rank: targetRank, qualifier: qualifier};
-   });
-   return {sourceAlphabet, targetAlphabet, mapping};
+  const {mapping, reverse, sourceAlphabet, targetAlphabet} = inputSubstitution;
+  const newMapping = mapping.slice();
+  const newReverse = mapping.slice();
+  Object.keys(editedPairs).forEach(function (sourceSymbol) {
+    const sourceRank = sourceAlphabet.ranks[sourceSymbol];
+    const targetRank = targetAlphabet.ranks[editedPairs[sourceSymbol]];
+    modifySubstitution(newMapping, reverse, sourceRank, targetRank, 'edit');
+  });
+  return {sourceAlphabet, targetAlphabet, mapping: newMapping};
 }
 
 function applySubstitution (substitution, inputText) {
-   const targetCells = inputText.cells.map(function (cell) {
-      if ('rank' in cell) {
-         return substitution.mapping[cell.rank];
-      } else {
-         return cell;
-      }
-   });
-   return {alphabet: substitution.targetAlphabet, cells: targetCells};
+  const targetCells = inputText.cells.map(function (cell) {
+    if ('rank' in cell) {
+      return substitution.mapping[cell.rank];
+    } else {
+      return cell;
+    }
+  });
+  return {alphabet: substitution.targetAlphabet, cells: targetCells};
 }
