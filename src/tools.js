@@ -1,75 +1,3 @@
-/* This file needs to be updated to work with the rest of the lib. */
-
-/*
-
-This files contains a tool-based implementation of the workspace.
-
-A tool has a persistent state, inputs, and outputs.
-
-A tool's inputs are passed to its `compute(state, scope)` function in a `scope`
-object which the function must update with the tool's computed outputs.
-
-A tool is displayed by a React component with receives as prop `state` the
-persistent state of the tool, and as prop `scope` the scope containing the
-tool's inputs and outputs.
-
-A workspace is build by providing a `setupTools` function to `WorkspaceBuilder`,
-which is called with an `addTool` callback that can be used to add tools.
-The `addTool(factory, wire, initialState)` callback takes a tool factory,
-a wiring function, and an initial state dump, and returns the tool's index.
-
-A tool factory is a constructor that must at least set `this.Component` and
-`this.compute`.
-
-A wiring function takes `(scopes, scope)` where `scopes` is an array containing
-the scopes of all the tools with a smaller index, must set the tool's inputs in
-`scope`.
-An output from an earlier tool can be supplied to the tool as input thus:
-```
-scope.inputProp = scopes[iEarlierTool].outputProp;
-```
-The scope can also be used to pass constants (such as alphabets or reference
-data) to the tool.
-
-A tool's view also receives a `dispatch` prop than can be used to dispach an
-action to mutate the persistent state of the tool.  An action is an object with
-at least a 'type' property.  The value of the 'type' property is used as a key
-in the tool's reducers, set in the factory, to find a reducer (function taking
-the tool's state and the action and returning a new state) for the action.
-
-The following is a basic example of a tool whose 'input' property is optionnaly
-incremented:
-
-```
-const ToolFactory = function () {
-  this.compute = function (state, scope) {
-    const {increment} = state;
-    const {input} = scope;
-    scope.output = input + (increment ? 1 : 0);
-  };
-  this.Component = EpicComponent(self => {
-    const onToggle = function () {
-      self.props.dispatch({type: 'Toggle'});
-    };
-    self.render = function() {
-      const {increment} = self.props.state;
-      const {input, output} = self.props.scope;
-      return (
-        <div>
-          {input}{' + '}
-          <span onClick={onToggle}>{increment ? 0 : 1}</span>
-          {' = '}{output}
-        </div>
-      );
-    };
-  };
-  this.reducers.Toggle = function (state, action) {
-    return {...state, !state.increment};
-  };
-};
-```
-
-*/
 
 import React from 'react';
 import EpicComponent from 'epic-component';
@@ -93,15 +21,13 @@ export default function WorkspaceBuilder (setupTools, makeRootScope) {
 
     /* taskInitialized is called to update the global state when the task is first loaded. */
     function taskLoaded (state) {
-      const rootScope = makeRootScope(state.task)
-      const workspace = makeWorkspace(setupTools);
-      return {...state, rootScope, workspace};
+      const tools = connectTools(setupTools);
+      return {...state, workspace};
     }
 
     /* taskUpdated is called to update the global state when the task is updated. */
     function taskUpdated (state) {
-      const rootScope = makeRootScope(state.task)
-      return {...state, rootScope};
+      return state;
     }
 
     /* workspaceLoaded is called to update the global state when a workspace dump is loaded. */
@@ -112,7 +38,7 @@ export default function WorkspaceBuilder (setupTools, makeRootScope) {
           return {...tool, state: tool.load(dump[i].state)};
         });
         workspace = {...workspace, tools};
-        return {...state, workspace};
+        return {...state, workspace, lastWorkspace: workspace};
       }
       // TODO: indicate load error in state
       return state;
@@ -141,6 +67,10 @@ export default function WorkspaceBuilder (setupTools, makeRootScope) {
       };
     });
 
+    bundle.addLateReducer(function (state, action) {
+      if (state.)
+    });
+
     function WorkspaceSelector (state, props) {
       const {score, feedback, task, workspace, rootScope, hintRequest, submitAnswer} = state;
       return {score, feedback, task, workspace, rootScope, hintRequest, submitAnswer: submitAnswer || {}};
@@ -162,7 +92,7 @@ export default function WorkspaceBuilder (setupTools, makeRootScope) {
 
       // Maintain a cache of dispatch functions bound to each tool.
       let dispatchCache = new WeakMap();
-      const getToolDispatch = function (tool) {
+      const getLocalDispatch = function (tool) {
         let dispatch;
         if (dispatchCache.has(tool)) {
           dispatch = dispatchCache.get(tool);
@@ -182,18 +112,17 @@ export default function WorkspaceBuilder (setupTools, makeRootScope) {
 
       self.render = function () {
         const {rootScope, workspace, dispatch} = self.props;
-        const scopes = [];
         if (!workspace) {
           return <div>Workspace not loaded.</div>;
         }
+        const scope = {...rootScope};
         const renderTool = function (tool) {
           const {index, wire, compute, Component, state} = tool;
-          const scope = Object.create(rootScope);
-          const dispatch = getToolDispatch(tool);
-          wire(scopes, scope);
-          scopes.push(scope);
+          const localDispatch = getLocalDispatch(tool);
+          const toolProps = {dispatch, localDispatch};
           compute(state, scope);
-          return <Component key={index} state={state} scope={scope} dispatch={dispatch}/>;
+          Object.assign(toolProps, wire(scope, state, self.props));
+          return <Component key={index} ...toolProps/>;
         };
         return <div>{workspace.tools.map(renderTool)}</div>;
       };
@@ -204,30 +133,27 @@ export default function WorkspaceBuilder (setupTools, makeRootScope) {
 
 };
 
-/* Returns a workspace initialized by setupTools, which is passed an addTool
-   function which takes a Tool factory, a wiring function, and the tool's
-   initial state, and returns the tool's index. */
-const makeWorkspace = function (setupTools) {
+const connectTools = function (setupTools) {
   const tools = [];
   const workspace = {tools};
-  const addTool = function (factory, wire, initialState) {
+  const addTool = function (factory, options, initialDump) {
     const index = tools.length;
     const tool = {
       index,
-      wire,
-      state: {},
+      options,
       reducers: {},
-      dump: state => state,
-      load: dump => dump
+      props: {},
+      dump: initialDump || {},
+      dumpToProps: dump => props,
+      propsToDump: props => dump
     };
     factory.call(tool);
-    let state = tool.load(initialState);
-    tool.state = tool.initialState = state;
+    tool.props = tool.dumpToProps(tool.dump);
     tools.push(tool);
     return index;
   };
   setupTools(addTool);
-  return workspace;
+  return tools;
 };
 
 /* Apply a task tool action (type prefixed with 'Task.Tool.'). */

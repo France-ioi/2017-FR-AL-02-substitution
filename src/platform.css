@@ -211,7 +211,7 @@ character substitutions tables
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 750px;
+  max-width: 1000px;
   display: inline-block;
   vertical-align: middle;
 }

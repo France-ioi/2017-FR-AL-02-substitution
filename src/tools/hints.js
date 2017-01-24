@@ -2,67 +2,85 @@
 import React from 'react';
 import EpicComponent from 'epic-component';
 import classnames from 'classnames';
-import Python from 'alkindi-task-lib/ui/python';
 
-/*
+import {getQualifierClass} from './common_views';
 
-Transient state:
+export default EpicComponent(self => {
 
-   selectedLetterRank
-   selectedCipherPos
-   selectedDecipherPos
+  const onShowHintRequest = function (event) {
+    const rank = parseInt(event.currentTarget.getAttribute('data-rank'));
+    const source = event.currentTarget.getAttribute('data-in')
+    self.props.onShowHintRequest({rank, source});
+  };
 
-Scope:
-
-   outputSubstitution
-
-*/
-
-const unknownHintCell = {qualifier: 'unknown'};
-
-const compute = function (state, scope) {
-   // Compute the substitution.
-   const {cipherAlphabet, clearAlphabet, hints} = scope;
-   const mapping = cipherAlphabet.symbols.map(_ => unknownHintCell);
-   Object.keys(hints).forEach(function (cipherLetter) {
-      const cipherRank = cipherAlphabet.ranks[cipherLetter];
-      const clearLetter = hints[cipherLetter];
-      const clearRank = clearAlphabet.ranks[clearLetter];
-      mapping[cipherRank] = {qualifier: 'hint', rank: clearRank};
-   });
-   scope.outputSubstitution = {
-      mapping,
-      sourceAlphabet: cipherAlphabet,
-      targetAlphabet: clearAlphabet
-   };
-};
-
-const Component = EpicComponent(self => {
-
-   self.render = function () {
-      const {outputSubstitutionVariable} = self.props.state;
-      const {hints, outputSubstitution} = self.props.scope;
+  self.render = function () {
+    const {hints, substitution} = self.props;
+    const {mapping, reverse, sourceAlphabet, targetAlphabet} = substitution;
+    const renderDecipherPair = function (sourceSymbol, sourceRank) {
+      const targetCell = mapping[sourceRank];
+      const {qualifier} = targetCell;
+      const isHint = qualifier === 'hint';
+      const targetSymbol = isHint ? targetAlphabet.symbols[targetCell.rank] : '?';
+      const pairClasses = ['adfgx-subst-pair', getQualifierClass(qualifier)];
+      const tgtCharClasses = ['adfgx-subst-tgt', isHint || 'adfgx-clickable'];
       return (
-         <div className='panel panel-default task-hints'>
-            <div className='panel-heading'>
-               <span className='code'>
-                  <Python.Assign>
-                     <Python.Var name={outputSubstitutionVariable}/>
-                     <Python.Dict dict={hints} renderValue={x => `"${x}"`}/>
-                  </Python.Assign>
-               </span>
-            </div>
-            <div className='panel-body'>
-               <p>{JSON.stringify(outputSubstitution.mapping)}</p>
-            </div>
-         </div>
+        <div key={sourceRank} className={classnames(pairClasses)}>
+          <div className='adfgx-subst-src'>
+            <span className='adfgx-subst-char'>
+              <span>{sourceSymbol}</span>
+            </span>
+          </div>
+          <div className={classnames(tgtCharClasses)} onClick={isHint || onShowHintRequest} data-rank={sourceRank} data-in={'cipher'}>
+            <span className='adfgx-subst-char'>
+              <span>{targetSymbol || '?'}</span>
+            </span>
+          </div>
+        </div>
       );
-   };
+    };
+    const renderCipherPair = function (targetSymbol, targetRank) {
+      const sourceCell = reverse[targetRank];
+      const {qualifier} = sourceCell;
+      const isHint = qualifier === 'hint';
+      const sourceSymbol = isHint ? sourceAlphabet.symbols[sourceCell.rank] : '?';
+      const pairClasses = ['adfgx-subst-pair-rev', getQualifierClass(qualifier)];
+      const srcCharClasses = ['adfgx-subst-src', isHint || 'adfgx-clickable'];
+      return (
+        <div key={targetRank} className={classnames(pairClasses)}>
+          <div className={classnames(srcCharClasses)} onClick={isHint || onShowHintRequest} data-rank={targetRank} data-in={'clear'}>
+            <span className='adfgx-subst-char'>
+              <span>{sourceSymbol}</span>
+            </span>
+          </div>
+          <div className='adfgx-subst-tgt'>
+            <span className='adfgx-subst-char'>
+              <span>{targetSymbol}</span>
+            </span>
+          </div>
+        </div>
+      );
+    };
+    return (
+      <div className='panel panel-default task-hints'>
+        <div className='panel-heading'>
+          {"indices"}
+        </div>
+        <div className='panel-body'>
+          <div>
+            <p>{"Substitution de déchiffrage :"}</p>
+            <div className='adfgx-subst'>
+              {sourceAlphabet.symbols.map(renderDecipherPair)}
+            </div>
+          </div>
+          <div>
+            <p>{"Substitution de chiffrage :"}</p>
+            <div className='adfgx-subst'>
+              {targetAlphabet.symbols.map(renderCipherPair)}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
 });
-
-export default function Hints () {
-   this.Component = Component;
-   this.compute = compute;
-   this.reducers = {};
-};

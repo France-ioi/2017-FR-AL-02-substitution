@@ -1,5 +1,5 @@
 
-export const makeAlphabet = function (symbols) {
+function makeAlphabet (symbols) {
    const size = symbols.length;
    var ranks = {};
    for (var iSymbol = 0; iSymbol < size; iSymbol++) {
