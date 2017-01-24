@@ -75,6 +75,7 @@ function getTextWrapping (text, maxWidth) {
   return lineStartCols;
 }
 
+/* hints: {chiffré → clair} */
 function getHintSubstitution (sourceAlphabet, targetAlphabet, hints) {
   /* Start with identity mappings. */
   const mapping = sourceAlphabet.symbols.map((_, rank) => {return {qualifier: 'unknown'};});
@@ -91,15 +92,7 @@ function getHintSubstitution (sourceAlphabet, targetAlphabet, hints) {
   sourceAlphabet.symbols.forEach(function (_, sourceRank) {
     modifySubstitution(mapping, reverse, sourceRank, sourceRank, 'unknown');
   });
-  targetAlphabet.symbols.forEach(function (_, targetRank) {
-    modifySubstitution(reverse, mapping, targetRank, targetRank, 'unknown');
-  });
-  return {
-    mapping,
-    reverse,
-    sourceAlphabet,
-    targetAlphabet
-  };
+  return {sourceAlphabet, targetAlphabet, mapping, reverse};
 }
 
 function modifySubstitution (mapping, reverse, sourceRank, targetRank, qualifier) {
@@ -108,17 +101,18 @@ function modifySubstitution (mapping, reverse, sourceRank, targetRank, qualifier
       targetRank = reverse[targetRank].rank;
     }
     mapping[sourceRank] = {qualifier, rank: targetRank};
+    reverse[targetRank] = {qualifier, rank: sourceRank};
   }
 }
 
 function editSubstitution (inputSubstitution, editedPairs) {
   const {mapping, reverse, sourceAlphabet, targetAlphabet} = inputSubstitution;
   const newMapping = mapping.slice();
-  const newReverse = mapping.slice();
+  const newReverse = reverse.slice();
   Object.keys(editedPairs).forEach(function (sourceSymbol) {
     const sourceRank = sourceAlphabet.ranks[sourceSymbol];
     const targetRank = targetAlphabet.ranks[editedPairs[sourceSymbol]];
-    modifySubstitution(newMapping, reverse, sourceRank, targetRank, 'edit');
+    modifySubstitution(newMapping, newReverse, sourceRank, targetRank, 'edit');
   });
   return {sourceAlphabet, targetAlphabet, mapping: newMapping};
 }

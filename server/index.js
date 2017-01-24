@@ -12,18 +12,21 @@ function grantHint (full_task, task, query, callback) {
   const {cipherSubst, decipherSubst} = full_task;
   switch (source) {
   case 'cipher':
-    task.hints[toLetter(rank)] = toLetter(decipherSubst[rank]);
+    task.hints[toCipherLetter(rank)] = toClearLetter(decipherSubst[rank]);
     break;
   case 'clear':
-    task.hints[toLetter(cipherSubst[rank])] = toLetter(rank);
+    task.hints[toCipherLetter(cipherSubst[rank])] = toClearLetter(rank);
     break;
   }
   task.highestPossibleScore = getHighestPossibleScore(task.version, task.hints);
   callback(null, {success: true, task: task});
 };
 
-function toLetter (rank) {
+function toCipherLetter (rank) {
   return String.fromCharCode(65 + rank);
+}
+function toClearLetter (rank) {
+  return String.fromCharCode(97 + rank);
 }
 
 function getHighestPossibleScore (version, hints) {

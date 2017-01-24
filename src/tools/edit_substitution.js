@@ -62,7 +62,7 @@ export default EpicComponent(self => {
    const onDrop = function (dragSource, dragTarget) {
       const {sourceAlphabet, targetAlphabet} = self.props.substitution;
       const key1 = dragTarget.source;
-      const value1 = sourceAlphabet.symbols[dragSource.target.rank];
+      const value1 = targetAlphabet.symbols[dragSource.target.rank];
       const key2 = dragSource.source;
       const value2 = targetAlphabet.symbols[dragTarget.target.rank];
       self.props.onSwapPairs(key1, value1, key2, value2);

@@ -8,8 +8,8 @@ function makeAlphabet (symbols) {
    return {symbols, size, ranks};
 };
 
-export const clearAlphabet = makeAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
-export const cipherAlphabet = clearAlphabet;
+export const cipherAlphabet = makeAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+export const clearAlphabet = makeAlphabet('abcdefghijklmnopqrstuvwxyz'.split(''));
 
 export const cellsFromString = function (text, alphabet, qualifier) {
    const cells = [];
