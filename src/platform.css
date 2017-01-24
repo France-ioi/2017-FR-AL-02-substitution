@@ -230,15 +230,6 @@ character substitutions tables
 #task .task-score > span strong {
   color: #000;
 }
-#task .task-hints.panel {
-  border-color: #C82829;
-}
-#task .task-hints > .panel-heading {
-  background-color: #C82829;
-}
-.task-hints .panel-heading .code-var, .task-hints .panel-heading .code-var {
-  color: #fff;
-}
 /* Fonts */
 .playFairGrid,
 .playFairAlphabet,
