@@ -310,12 +310,14 @@
 .adfgx-subst-tgt .adfgx-subst-freq span {
   vertical-align: top;
 }
-.adfgx-subst-src .adfgx-subst-chars {
+.adfgx-subst-src .adfgx-subst-char, .adfgx-subst-tgt .adfgx-subst-char {
   font-family: "Lucida Console", Monaco, monospace;
+}
+.adfgx-subst-src .adfgx-subst-char {
   margin: 6px 0;
   display: block;
 }
-.adfgx-subst-src .adfgx-subst-chars span {
+.adfgx-subst-src .adfgx-subst-char span {
   display: block;
   text-align: center;
   line-height: 1;

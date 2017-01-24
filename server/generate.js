@@ -9,13 +9,12 @@ module.exports = generate;
 
 function generate (params, seed, callback) {
   const rng = seedrandom(seed);
-  const cipherSubst = shuffle(range(0, 25).toArray(), {copy: true, rng: rng});
+  const cipherSubst = shuffle(range(0, 26).toArray(), {copy: true, rng: rng});
+  const decipherSubst = inverseSubst(cipherSubst);
   const clearText = generateRandomText(rng, 20, params.version === 1 ? ' ' : '');
   const cipherText = applySubstitution(cipherSubst, clearText);
-  console.log(clearText);
-  console.log(cipherText);
   const task = {cipherText, hints: {}};
-  const full_task = {params, seed, clearText, cipherText, cipherSubst};
+  const full_task = {params, seed, clearText, cipherText, cipherSubst, decipherSubst};
   callback(null, {task, full_task});
 };
 
@@ -43,6 +42,14 @@ function applySubstitution (subst, clearText) {
     }
   }
   return cipher.join('');
+}
+
+function inverseSubst (subst) {
+  const result = subst.slice();
+  subst.forEach(function (j, i) {
+    result[j] = i;
+  });
+  return result;
 }
 
 // Run this module directly with node to test it.

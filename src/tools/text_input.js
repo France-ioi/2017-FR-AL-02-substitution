@@ -3,7 +3,8 @@ import EpicComponent from 'epic-component';
 import Python from 'alkindi-task-lib/ui/python';
 import Variables from 'alkindi-task-lib/ui/variables';
 
-import {cellsFromString, renderText} from './common';
+import {cellsFromString} from './common';
+import {renderText} from './common_views';
 
 /*
 
@@ -41,7 +42,7 @@ export const Component = EpicComponent(self => {
             </div>
             <div className='panel-body'>
                {false && <Variables inputVars={inputVars} outputVars={outputVars} />}
-               <div className='adfgx-text-input'>{renderText(outputText)}</div>
+               <div className='text-input'>{renderText(outputText)}</div>
             </div>
          </div>
       );

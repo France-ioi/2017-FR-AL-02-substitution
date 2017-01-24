@@ -3,7 +3,21 @@ import EpicComponent from 'epic-component';
 import Python from 'alkindi-task-lib/ui/python';
 import Variables from 'alkindi-task-lib/ui/variables';
 
-import {renderText} from './common';
+export const renderText = function (text) {
+   const {alphabet, cells} = text;
+   const lines = [];
+   let line = [];
+   cells.forEach(function (cell, iCell) {
+      line.push(renderCell(iCell, cell, alphabet));
+      if (line.length === 40) {
+         lines.push(<div key={lines.length} className="adfgx-line">{line}</div>);
+         line = [];
+      }
+   });
+   if (line.length > 0)
+      lines.push(<div key={lines.length}>{line}</div>)
+   return <div className='adfgx-text'>{lines}</div>;
+};
 
 export const Component = EpicComponent(self => {
 
