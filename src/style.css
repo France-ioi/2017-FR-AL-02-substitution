@@ -110,6 +110,17 @@ p.hug-bottom {
 .dualtext-col {
   display: inline-block;
 }
+.dualtext-col .dualtext-top-cell .adfgx-cell,
+.dualtext-col .dualtext-bottom-cell .adfgx-cell {
+  border: 1px solid #ccc;
+  margin-right: 2px;
+}
+.dualtext-col .dualtext-top-cell .adfgx-cell {
+  border-bottom: none;
+}
+.dualtext-col .dualtext-bottom-cell .adfgx-cell {
+  border-top: none;
+}
 .dualtext-line {
   margin-bottom: 6px;
 }
@@ -121,9 +132,21 @@ p.hug-bottom {
 .dualtext-label, .adfgx-subst-label {
   font-family: Arial, sans-serif;
   display: inline-block;
-  width: 50px;
-  line-height: 22px;
+  line-height: 26px;
   color: #666;
   text-align: right;
-  margin-right: 10px;
+}
+}
+.dualtext-label div {
+  padding: 0 10px;
+}
+.adfgx-subst-label .adfgx-subst-tgt,
+.task-hints .adfgx-subst-tgt,
+.dualtext-label .adfgx-subst-tgt,
+.dualtext-col .subst-tgt {
+  background-color: #efefef;
+  margin-top: -1px;
+}
+.dualtext-col:last-child .adfgx-cell {
+  margin-right: 0;
 }

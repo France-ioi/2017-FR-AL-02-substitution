@@ -32,7 +32,7 @@ export const renderDualText = function (topText, bottomText, wrapping) {
    const lines = [];
    let line;
    let wrappingCol = wrapping[0];
-   const lineHeader = <div key={0} className='dualtext-label'><div>{"chiffré"}</div><div>{"clair"}</div></div>;
+   const lineHeader = <div key={0} className='dualtext-label'><div className="adfgx-subst-src">{"chiffré"}</div><div className="adfgx-subst-tgt">{"clair"}</div></div>;
    for (let iCell = 0; iCell < topCells.length; iCell += 1) {
       if (iCell === wrappingCol) {
          if (line) {
@@ -43,10 +43,10 @@ export const renderDualText = function (topText, bottomText, wrapping) {
       }
       line.push(
          <div key={line.length} className="dualtext-col">
-            <div className="dualtext-top-cell">
+            <div className="dualtext-top-cell subst-src">
                {renderCell(iCell, topCells[iCell], topAlphabet)}
             </div>
-            <div className="dualtext-bottom-cell">
+            <div className="dualtext-bottom-cell subst-tgt">
                {renderCell(iCell, clearCells[iCell], clearAlphabet)}
             </div>
          </div>
