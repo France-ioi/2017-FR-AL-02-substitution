@@ -30,17 +30,35 @@ const referenceFrequencies = [
   0.0030803592,
   0.0013644851
 ];
+const referenceRanks =
+  referenceFrequencies.map((frequency, rank) => {return {frequency, rank};})
+    .sort(function (s1, s2) {
+      const f1 = s1.frequency, f2 = s2.frequency;
+      return f1 > f2 ? -1 : (f1 < f2 ? 1 : 0);
+    });
 
 export function createWorkspace (task) {
   const cipherText = parseText(cipherAlphabet, task.cipherText);
   const wrapping = getTextWrapping(cipherText, 60);
-  let cipherFrequencies, targetFrequencies;
-  if (task.version === 2) {
-    cipherFrequencies = getFrequencies(cipherText);
+  let cipherFrequencies, targetFrequencies, mapping;
+  if (task.version === 1) {
+    mapping = cipherAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
+  } else {
     targetFrequencies = referenceFrequencies;
-    console.log('frequencies', cipherFrequencies);
+    cipherFrequencies = getFrequencies(cipherText);
+    mapping = new Array(cipherAlphabet.size);
+    referenceRanks.forEach(function (clearStat, index) {
+      const cipherStat = cipherFrequencies[index];
+      mapping[cipherStat.rank] = {rank: clearStat.rank, qualifier: 'unknown'};
+    });
   }
-  const hintSubstitution = getHintSubstitution(cipherAlphabet, clearAlphabet, task.hints);
+  const baseSubstitution = {
+    sourceAlphabet: cipherAlphabet,
+    targetAlphabet: clearAlphabet,
+    mapping,
+    reverse: reverseMapping(mapping)
+  };
+  const hintSubstitution = applyHints(baseSubstitution, task.hints);
   return {
     cipherText, wrapping,
     cipherFrequencies, targetFrequencies,
@@ -133,11 +151,18 @@ function getTextWrapping (text, maxWidth) {
   return lineStartCols;
 }
 
+function reverseMapping (mapping) {
+  const reverse = Array(mapping.size);
+  mapping.forEach(function (cell, rank) {
+    const {qualifier} = cell;
+    reverse[cell.rank] = {rank, qualifier};
+  });
+  return reverse;
+}
+
 /* hints: {chiffré → clair} */
-function getHintSubstitution (sourceAlphabet, targetAlphabet, hints) {
-  /* Start with identity mappings. */
-  const mapping = sourceAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
-  const reverse = targetAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
+function applyHints (substitution, hints) {
+  const {sourceAlphabet, targetAlphabet, mapping, reverse} = substitution;
   /* Apply each hint as swapping pairs of letters. */
   Object.keys(hints).forEach(function (sourceLetter) {
     const sourceRank = sourceAlphabet.ranks[sourceLetter];
