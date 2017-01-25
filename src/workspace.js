@@ -39,7 +39,7 @@ const referenceRanks =
 
 export function createWorkspace (task) {
   const cipherText = parseText(cipherAlphabet, task.cipherText);
-  const wrapping = getTextWrapping(cipherText, 60);
+  const wrapping = getTextWrapping(cipherText, 35);
   let cipherFrequencies, targetFrequencies, mapping;
   if (task.version === 1) {
     mapping = cipherAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
