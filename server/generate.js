@@ -18,7 +18,7 @@ function generate (params, seed, callback) {
   const task = {version, cipherText, hints: {}};
   const full_task = {params, seed, clearText, cipherText, cipherSubst, decipherSubst};
   callback(null, {task, full_task});
-};
+}
 
 function generateRandomText (rng, maxWords, separator) {
   const minLength = dictionary[0][0].length;
