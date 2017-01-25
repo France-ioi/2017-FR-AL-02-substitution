@@ -78,19 +78,14 @@ function getTextWrapping (text, maxWidth) {
 /* hints: {chiffré → clair} */
 function getHintSubstitution (sourceAlphabet, targetAlphabet, hints) {
   /* Start with identity mappings. */
-  const mapping = sourceAlphabet.symbols.map((_, rank) => {return {qualifier: 'unknown'};});
-  const reverse = targetAlphabet.symbols.map((_, rank) => {return {qualifier: 'unknown'};});
+  const mapping = sourceAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
+  const reverse = targetAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
   /* Apply each hint as swapping pairs of letters. */
   Object.keys(hints).forEach(function (sourceLetter) {
     const sourceRank = sourceAlphabet.ranks[sourceLetter];
     const targetLetter = hints[sourceLetter];
     const targetRank = targetAlphabet.ranks[targetLetter];
-    mapping[sourceRank] = {qualifier: 'hint', rank: targetRank};
-    reverse[targetRank] = {qualifier: 'hint', rank: sourceRank};
-  });
-  /* Set a rank on unknown positions. */
-  sourceAlphabet.symbols.forEach(function (_, sourceRank) {
-    modifySubstitution(mapping, reverse, sourceRank, sourceRank, 'unknown');
+    modifySubstitution(mapping, reverse, sourceRank, targetRank, 'hint');
   });
   return {sourceAlphabet, targetAlphabet, mapping, reverse};
 }
