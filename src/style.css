@@ -139,6 +139,13 @@ p.hug-bottom {
   color: #666;
   text-align: right;
 }
+.panel-body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .dualtext-label div {
   padding: 0 10px;
