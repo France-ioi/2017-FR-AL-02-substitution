@@ -27,6 +27,8 @@
   Tool hints
 
 */
+.task-hints .adfgx-subst-label div {
+  padding: 0 10px;
 }
 .adfgx-subst {
   margin-bottom: 10px;
@@ -86,7 +88,8 @@
 .adfgx-clickable {
   cursor: pointer;
 }
-.adfgx-clickable:hover {
+.adfgx-clickable:hover,
+.adfgx-clickable:hover .adfgx-subst-char {
   background: #ccc;
 }
 

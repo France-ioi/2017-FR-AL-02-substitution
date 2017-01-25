@@ -104,7 +104,7 @@ export default EpicComponent(self => {
         <div className='panel-body'>
           {hintRequest && renderHintRequest()}
           <div>
-            <p className='hug-bottom'>{"Substitution de déchiffrage :"}</p>
+            <p className='hug-bottom text-bold'>{"Substitution de déchiffrage :"}</p>
             <div className='adfgx-subst'>
               <div className='adfgx-subst-label'>
                 <div className='adfgx-subst-src'>{"chiffré"}</div>
@@ -114,11 +114,11 @@ export default EpicComponent(self => {
             </div>
           </div>
           <div>
-            <p className='hug-bottom'>{"Substitution de chiffrage :"}</p>
+            <p className='hug-bottom text-bold'>{"Substitution de chiffrage :"}</p>
             <div className='adfgx-subst'>
               <div className='adfgx-subst-label'>
-                <div className='adfgx-subst-src'>{"clair"}</div>
-                <div className='adfgx-subst-tgt'>{"chiffré"}</div>
+                <div className='adfgx-subst-src'>{"chiffré"}</div>
+                <div className='adfgx-subst-tgt'>{"clair"}</div>
               </div>
               {targetAlphabet.symbols.map(renderCipherPair)}
             </div>
