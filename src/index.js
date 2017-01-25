@@ -5,6 +5,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import Task from './task';
 import Workspace from './tools/index';
+import {createWorkspace, updateWorkspace} from './workspace';
 
 import 'normalize.css';
 import 'font-awesome/css/font-awesome.css';
@@ -39,27 +40,24 @@ function TaskBundle (bundle, deps) {
   });
 
   function taskLoaded (state) {
-    return {...state, workspace: {editedPairs: {}}};
+    return {...state, workspace: updateWorkspace(createWorkspace(state.task), {editedPairs: {}})};
   }
 
   function taskUpdated (state) {
-    return state;
+    return {...state, workspace: updateWorkspace(createWorkspace(state.task), state.workspace)};
   }
 
   function workspaceLoaded (state, dump) {
-    const {editedPairs} = dump;
-    const workspace = {editedPairs};
-    return {...state, workspace};
+    return {...state, workspace: updateWorkspace(state.workspace, dump)};
   }
 
   function dumpWorkspace (state) {
-    const {workspace} = state;
-    const {editedPairs} = workspace;
+    const {editedPairs} = state.workspace;
     return {editedPairs};
   }
 
   function isWorkspaceReady (state) {
-    return !!state.workspace;
+    return state.workspace.ready;
   }
 
   function WorkspaceSelector (state, props) {
@@ -79,13 +77,12 @@ function TaskBundle (bundle, deps) {
     const {key1, value1, key2, value2} = action;
     const pairs = state
     editedPairs = {...editedPairs, [key1]: value1, [key2]: value2};
-    workspace = {...workspace, editedPairs};
+    workspace = updateWorkspace(state.workspace, {editedPairs});
     return {...state, workspace};
   });
 
   bundle.addReducer('substReset', function (state, action) {
-    let {workspace} = state;
-    workspace = {...workspace, editedPairs: {}};
+    const workspace = updateWorkspace(state.workspace, {editedPairs: {}});
     return {...state, workspace};
   });
 

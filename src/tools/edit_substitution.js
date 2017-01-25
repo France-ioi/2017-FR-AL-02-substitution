@@ -9,7 +9,7 @@ import {getQualifierClass} from './common_views';
 
 const BareSubstTarget = EpicComponent(self => {
    self.render = function () {
-      const {source, target, targetSymbol} = self.props;
+      const {source, target, targetSymbol, frequency, barScale} = self.props;
       const {isDragging, connectDropTarget, connectDragSource} = self.props;
       const isDragTarget = typeof connectDropTarget === 'function';
       const isDragSource = typeof connectDragSource === 'function';
@@ -17,6 +17,10 @@ const BareSubstTarget = EpicComponent(self => {
       let el = (
          <div className={classnames(classes)}>
             <span className='adfgx-subst-char'>{targetSymbol}</span>
+            {frequency &&
+               <span className='adfgx-subst-freq' title={(frequency * 100).toFixed(1)+'%'}>
+                  <span style={{height: (frequency * barScale).toFixed(1)+'px'}}></span>
+               </span>}
          </div>
       );
       if (isDragTarget)
@@ -73,20 +77,28 @@ export default EpicComponent(self => {
    };
 
    self.render = function() {
+      const {cipherFrequencies, targetFrequencies} = self.props;
+      const barScale = targetFrequencies ? 42 / Math.max.apply(null, targetFrequencies) : 0;
       const {sourceAlphabet, targetAlphabet, mapping} = self.props.substitution;
-      const renderSubstCell = function (targetCell, sourceRank) {
+      const renderSubstCell = function (sourceRank, stat) {
          const sourceSymbol = sourceAlphabet.symbols[sourceRank];
+         const targetCell = mapping[sourceRank];
          const targetSymbol = targetAlphabet.symbols[targetCell.rank];
          const isEditable = targetCell.qualifier !== 'hint';
          const Target = isEditable ? SubstTarget : BareSubstTarget;
          return (
             <div key={sourceRank} className={classnames(['adfgx-subst-pair', getQualifierClass(targetCell.qualifier)])}>
                <div className='adfgx-subst-src'>
+                  {stat &&
+                     <span className='adfgx-subst-freq' title={`${stat.percentage}%`}>
+                        <span style={{height: (stat.frequency * barScale).toFixed(1)+'px'}}></span>
+                     </span>}
                   <span className='adfgx-subst-char'>
                      <span>{sourceSymbol}</span>
                   </span>
                </div>
-               <Target source={sourceSymbol} target={targetCell} targetSymbol={targetSymbol} onDrop={onDrop} />
+               <Target source={sourceSymbol} target={targetCell} targetSymbol={targetSymbol} onDrop={onDrop}
+                  frequency={stat && targetFrequencies[targetCell.rank]} barScale={barScale} />
             </div>
          );
       };
@@ -103,7 +115,9 @@ export default EpicComponent(self => {
                </div>
                <div className='grillesSection'>
                   <div className='adfgx-subst'>
-                     {mapping.map(renderSubstCell)}
+                     {cipherFrequencies
+                        ? cipherFrequencies.map(stat => renderSubstCell(stat.rank, stat))
+                        : mapping.map((_, sourceRank) => renderSubstCell(sourceRank, null))}
                   </div>
                </div>
             </div>

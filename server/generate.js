@@ -8,12 +8,14 @@ const dictionary = require('./words');
 module.exports = generate;
 
 function generate (params, seed, callback) {
+  const {version} = params;
   const rng = seedrandom(seed);
+  const maxWords = 400;
   const cipherSubst = shuffle(range(0, 26).toArray(), {copy: true, rng: rng});
   const decipherSubst = inverseSubst(cipherSubst);
-  const clearText = generateRandomText(rng, 20, params.version === 1 ? ' ' : '');
+  const clearText = generateRandomText(rng, maxWords, version === 1 ? ' ' : '');
   const cipherText = applySubstitution(cipherSubst, clearText);
-  const task = {cipherText, hints: {}};
+  const task = {version, cipherText, hints: {}};
   const full_task = {params, seed, clearText, cipherText, cipherSubst, decipherSubst};
   callback(null, {task, full_task});
 };
