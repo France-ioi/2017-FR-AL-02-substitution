@@ -70,7 +70,9 @@ function TaskBundle (bundle, deps) {
   bundle.defineAction('substLock', 'Workspace.Subst.Lock');
 
   bundle.defineView('Workspace', WorkspaceSelector,
-    Workspace(bundle.pack('substSwapPairs', 'substReset', 'substLock', 'showHintRequest', 'requestHint')));
+    Workspace(bundle.pack(
+      'substSwapPairs', 'substReset', 'substLock', 'showHintRequest', 'requestHint',
+      'dismissAnswerFeedback', 'submitAnswer', 'SaveButton')));
 
   bundle.addReducer('substSwapPairs', function (state, action) {
     let {workspace} = state;

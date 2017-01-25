@@ -216,3 +216,9 @@ function applySubstitution (substitution, inputText) {
   });
   return {alphabet: substitution.targetAlphabet, cells: targetCells};
 }
+
+export function exportText (text) {
+  const {alphabet, cells} = text;
+  const {symbols} = alphabet;
+  return cells.map(cell => symbols[cell.rank]).join('');
+}
