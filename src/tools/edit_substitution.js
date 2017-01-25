@@ -120,7 +120,7 @@ export default EpicComponent(self => {
                {"substitution"}
             </div>
             <div className='panel-body'>
-               <div className='pull-right'>
+               <div>
                   <Button onClick={onReset}>{"réinitialiser"}</Button>
                </div>
                <div className='grillesSection'>
