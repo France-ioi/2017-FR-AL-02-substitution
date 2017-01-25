@@ -91,13 +91,23 @@ function getHintSubstitution (sourceAlphabet, targetAlphabet, hints) {
 }
 
 function modifySubstitution (mapping, reverse, sourceRank, targetRank, qualifier) {
-  if (mapping[sourceRank].qualifier === 'unknown') {
-    while (reverse[targetRank].qualifier !== 'unknown') {
-      targetRank = reverse[targetRank].rank;
-    }
-    mapping[sourceRank] = {qualifier, rank: targetRank};
-    reverse[targetRank] = {qualifier, rank: sourceRank};
+  const oldTarget = mapping[sourceRank];
+  const oldSource = reverse[targetRank];
+  if (oldTarget.qualifier !== 'unknown' || oldSource.qualifier !== 'unknown') {
+    console.log('skipped', oldSource, sourceRank, oldTarget, targetRank, qualifier);
+    return;
   }
+  /* Perform a swap in mapping so that mapping[sourceRank].rank === targetRank. */
+  swap(mapping, sourceRank, oldSource.rank, qualifier);
+  swap(reverse, targetRank, oldTarget.rank, qualifier);
+}
+
+/* Swap the values at rank1 and rank2 in mapping, updating the qualifier in
+   the new value for rank1.  The qualifier is set even if rank1 === rank2. */
+function swap (mapping, rank1, rank2, qualifier) {
+  const temp = {...mapping[rank2], qualifier};
+  mapping[rank2] = mapping[rank1];
+  mapping[rank1] = temp;
 }
 
 function editSubstitution (inputSubstitution, editedPairs) {
