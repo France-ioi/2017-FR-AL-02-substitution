@@ -8,15 +8,25 @@ import {DragSource, DropTarget} from 'react-dnd';
 import {getQualifierClass} from './common_views';
 
 const BareSubstTarget = EpicComponent(self => {
+
+   const onLock = function (event) {
+      event.preventDefault();
+      const {targetSymbol, source} = self.props;
+      self.props.onLock(source, targetSymbol);
+   };
+
    self.render = function () {
-      const {source, target, targetSymbol, frequency, barScale} = self.props;
+      const {source, target, targetSymbol, frequency, barScale, locked} = self.props;
       const {isDragging, connectDropTarget, connectDragSource} = self.props;
       const isDragTarget = typeof connectDropTarget === 'function';
       const isDragSource = typeof connectDragSource === 'function';
       const classes = ['adfgx-subst-tgt', isDragSource && 'adfgx-draggable', isDragging && 'dragging'];
       let el = (
          <div className={classnames(classes)}>
-            <span className='adfgx-subst-char'>{targetSymbol}</span>
+            <span className='adfgx-subst-char' onClick={onLock}>
+               <span>{targetSymbol}</span>
+               <i className={classnames(['fa', locked ? 'fa-lock' : 'fa-unlock-alt'])}></i>
+            </span>
             {frequency &&
                <span className='adfgx-subst-freq' title={(frequency * 100).toFixed(1)+'%'}>
                   <span style={{height: (frequency * barScale).toFixed(1)+'px'}}></span>
@@ -72,21 +82,12 @@ export default EpicComponent(self => {
       self.props.onSwapPairs(key1, value1, key2, value2);
    };
 
-   const onLock = function (event) {
-      const sourceRank = event.currentTarget.getAttribute('data-rank');
-      const {sourceAlphabet, targetAlphabet, mapping} = self.props.substitution;
-      const sourceSymbol = sourceAlphabet.symbols[sourceRank];
-      const targetCell = mapping[sourceRank];
-      const targetSymbol = targetAlphabet.symbols[targetCell.rank];
-      self.props.onLock(sourceSymbol, targetSymbol);
-   };
-
    const onReset = function () {
       self.props.onReset();
    };
 
    self.render = function() {
-      const {cipherFrequencies, targetFrequencies} = self.props;
+      const {cipherFrequencies, targetFrequencies, onLock} = self.props;
       const barScale = targetFrequencies ? 42 / Math.max.apply(null, targetFrequencies) : 0;
       const {sourceAlphabet, targetAlphabet, mapping} = self.props.substitution;
       const renderSubstCell = function (sourceRank, stat) {
@@ -102,12 +103,12 @@ export default EpicComponent(self => {
                      <span className='adfgx-subst-freq' title={`${stat.percentage}%`}>
                         <span style={{height: (stat.frequency * barScale).toFixed(1)+'px'}}></span>
                      </span>}
-                  <span className='adfgx-subst-char' onClick={onLock} data-rank={sourceRank}>
+                  <span className='adfgx-subst-char' data-rank={sourceRank}>
                      <span>{sourceSymbol}</span>
                   </span>
                </div>
                <Target source={sourceSymbol} target={targetCell} targetSymbol={targetSymbol} onDrop={onDrop}
-                  frequency={stat && targetFrequencies[targetCell.rank]} barScale={barScale} />
+                  frequency={stat && targetFrequencies[targetCell.rank]} barScale={barScale} onLock={onLock} locked={targetCell.qualifier === 'edit'} />
             </div>
          );
       };
