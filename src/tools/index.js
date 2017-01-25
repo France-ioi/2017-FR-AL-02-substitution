@@ -16,6 +16,10 @@ export default actions => EpicComponent(self => {
     self.props.dispatch({type: actions.substReset});
   }
 
+  function onSubstLock (sourceSymbol, targetSymbol) {
+    self.props.dispatch({type: actions.substLock, sourceSymbol, targetSymbol});
+  }
+
   function onShowHintRequest (request) {
     self.props.dispatch({type: actions.showHintRequest, request});
   }
@@ -30,7 +34,7 @@ export default actions => EpicComponent(self => {
     return (
       <div>
         <Hints task={task} substitution={hintSubstitution} onShowHintRequest={onShowHintRequest} onRequestHint={onRequestHint} hintRequest={hintRequest}/>
-        <EditSubstitution substitution={editedSubstitution} onReset={onSubstReset} onSwapPairs={onSubstSwapPairs}
+        <EditSubstitution substitution={editedSubstitution} onReset={onSubstReset} onSwapPairs={onSubstSwapPairs} onLock={onSubstLock}
           cipherFrequencies={cipherFrequencies} targetFrequencies={targetFrequencies} />
         <DualText topText={cipherText} bottomText={clearText} wrapping={wrapping} />
       </div>

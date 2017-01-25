@@ -72,6 +72,15 @@ export default EpicComponent(self => {
       self.props.onSwapPairs(key1, value1, key2, value2);
    };
 
+   const onLock = function (event) {
+      const sourceRank = event.currentTarget.getAttribute('data-rank');
+      const {sourceAlphabet, targetAlphabet, mapping} = self.props.substitution;
+      const sourceSymbol = sourceAlphabet.symbols[sourceRank];
+      const targetCell = mapping[sourceRank];
+      const targetSymbol = targetAlphabet.symbols[targetCell.rank];
+      self.props.onLock(sourceSymbol, targetSymbol);
+   };
+
    const onReset = function () {
       self.props.onReset();
    };
@@ -93,7 +102,7 @@ export default EpicComponent(self => {
                      <span className='adfgx-subst-freq' title={`${stat.percentage}%`}>
                         <span style={{height: (stat.frequency * barScale).toFixed(1)+'px'}}></span>
                      </span>}
-                  <span className='adfgx-subst-char'>
+                  <span className='adfgx-subst-char' onClick={onLock} data-rank={sourceRank}>
                      <span>{sourceSymbol}</span>
                   </span>
                </div>

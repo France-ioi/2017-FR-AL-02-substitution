@@ -198,9 +198,10 @@ function editSubstitution (inputSubstitution, editedPairs) {
   const newMapping = mapping.slice();
   const newReverse = reverse.slice();
   Object.keys(editedPairs).forEach(function (sourceSymbol) {
+    const target = editedPairs[sourceSymbol];
     const sourceRank = sourceAlphabet.ranks[sourceSymbol];
-    const targetRank = targetAlphabet.ranks[editedPairs[sourceSymbol]];
-    modifySubstitution(newMapping, newReverse, sourceRank, targetRank, 'edit');
+    const targetRank = targetAlphabet.ranks[target.symbol];
+    modifySubstitution(newMapping, newReverse, sourceRank, targetRank, target.locked ? 'edit' : 'unknown');
   });
   return {sourceAlphabet, targetAlphabet, mapping: newMapping};
 }

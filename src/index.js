@@ -67,16 +67,18 @@ function TaskBundle (bundle, deps) {
 
   bundle.defineAction('substSwapPairs', 'Workspace.Subst.SwapPairs');
   bundle.defineAction('substReset', 'Workspace.Subst.Reset');
+  bundle.defineAction('substLock', 'Workspace.Subst.Lock');
 
   bundle.defineView('Workspace', WorkspaceSelector,
-    Workspace(bundle.pack('substSwapPairs', 'substReset', 'showHintRequest', 'requestHint')));
+    Workspace(bundle.pack('substSwapPairs', 'substReset', 'substLock', 'showHintRequest', 'requestHint')));
 
   bundle.addReducer('substSwapPairs', function (state, action) {
     let {workspace} = state;
     let {editedPairs} = state.workspace;
     const {key1, value1, key2, value2} = action;
-    const pairs = state
-    editedPairs = {...editedPairs, [key1]: value1, [key2]: value2};
+    const target1 = {...editedPairs[key2], symbol: value1};
+    const target2 = {...editedPairs[key1], symbol: value2};
+    editedPairs = {...editedPairs, [key1]: target1, [key2]: target2};
     workspace = updateWorkspace(state.workspace, {editedPairs});
     return {...state, workspace};
   });
@@ -85,5 +87,21 @@ function TaskBundle (bundle, deps) {
     const workspace = updateWorkspace(state.workspace, {editedPairs: {}});
     return {...state, workspace};
   });
+
+  bundle.addReducer('substLock', function (state, action) {
+    let {workspace} = state;
+    let {editedPairs} = state.workspace;
+    const {sourceSymbol, targetSymbol} = action;
+    let target = editedPairs[sourceSymbol];
+    if (target) {
+      target = {...target, locked: !target.locked};
+    } else {
+      target = {symbol: targetSymbol, locked: true};
+    }
+    editedPairs = {...editedPairs, [sourceSymbol]: target};
+    workspace = updateWorkspace(state.workspace, {editedPairs});
+    return {...state, workspace};
+  });
+
 
 };
