@@ -118,6 +118,8 @@ export const Task1 = EpicComponent(self => {
 
             <p>Le texte d’origine est formé d’une ou plusieurs petites phrases mises bout à bout dont on a retiré les accents et la ponctuation.</p>
 
+            <p>Ces phrases sont en langue française mais sont choisies aléatoirement et sont sans rapport les unes avec les autres. Le résultat n'a donc pas de sens global.</p>
+
             <p>On a appliqué une substitution portant sur les 26 lettres de l’alphabet, pour obtenir le texte chiffré, que l’on vous fournit. Pour vous aider à vous retrouver, les lettres chiffrées sont en majuscules, tandis que les lettres déchiffrées sont en minuscules.</p>
 
             <h2>Ce qui vous est demandé</h2>
