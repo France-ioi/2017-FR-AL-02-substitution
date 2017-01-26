@@ -1,5 +1,32 @@
 #container { width: 800px;}
 
+.taskInstructions {
+    text-align: justify;
+}
+.taskInstructions table.tableBorders {
+  margin: 10px 50px 20px;
+}
+.taskInstructions table.tableBorders th {
+  border: 1px solid #000;
+  padding: 10px 30px 10px 10px;
+  font-weight: normal;
+}
+.taskInstructions table.tableBorders td {
+  border: 1px solid #000;
+  text-align: center;
+  width: 3em;
+  padding: 10px;
+}
+.taskInstructions table.pre {
+    margin: 10px auto;
+}
+.taskInstructions table.pre td {
+    padding: 4px 10px;
+}
+.taskInstructions img {
+  display: block;
+  margin: 10px auto;
+}
 .taskHeader {
   margin-bottom: 30px;
 }

@@ -3,7 +3,7 @@ import runTask from 'alkindi-task-lib';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import Task from './task';
+import Task from './intro';
 import Workspace from './tools/index';
 import {createWorkspace, updateWorkspace} from './workspace';
 
