@@ -36,7 +36,7 @@ function generateRandomText (rng, maxWords, separator) {
 function applySubstitution (subst, clearText) {
   const cipher = [];
   for (let iLetter = 0; iLetter < clearText.length; iLetter++) {
-    const charIndex = clearText.charCodeAt(iLetter) - 65;
+    const charIndex = clearText.charCodeAt(iLetter) - 97;
     if (charIndex < 0 || charIndex >= 26) {
       cipher.push(clearText.charAt(iLetter));
     } else {
