@@ -51,7 +51,7 @@ export const Task1 = EpicComponent(self => {
             </tbody>
             </table>
 
-            <p>Lorsque l’on chiffre un message, la lettre a est remplacée par un R, b par un D, etc.</p>
+            <p>Lorsque l’on chiffre un message, la lettre 'a' est remplacée par un 'R', 'b' par un 'D', etc.</p>
 
             <p>Ainsi, chiffrer le message “alice” donne “RTAGL” :</p>
 
@@ -125,15 +125,13 @@ export const Task1 = EpicComponent(self => {
 
             <p>Votre objectif est de retrouver le texte d’origine en déterminant la substitution à appliquer pour déchiffrer le texte qui vous est donné.</p>
 
-            <p>Pour modifier la substitution, déplacez une lettre de sa deuxième rangée (lettre déchiffrée) en la glissant sous la lettre chiffrée de votre choix. Ainsi, si vous pensez que chaque lettre “A” du message chiffré est en fait un “e” dans le message d’origine, déplacez le “e” de la rangée du bas pour le placez sous le “A”.</p>
+            <p>Pour modifier la substitution, déplacez une lettre de sa deuxième rangée (lettre déchiffrée) en la glissant sous la lettre chiffrée de votre choix. Ainsi, si vous pensez que chaque lettre 'A' du message chiffré est en fait un 'e' dans le message d’origine, déplacez le 'e' de la rangée du bas pour le placez sous le 'A'.</p>
 
             <img src="" alt="visuel de l'outil Substitution"/>
 
             <h2>Utilisation des cadenas</h2>
 
             <p>Vous pouvez cliquer sur les cadenas sous les lettres de la substitution pour marquer celles dont vous êtes certains. Une fois le cadenas activé, la lettre correspondante ne peut plus être déplacée dans la substitution. Vous éviterez ainsi de les déplacer par erreur. Cliquez de nouveau sur un cadenas pour le désactiver.</p>
-
-            <p>Les lettres sur lesquelles un cadenas a été activé apparaissent sur fond noir dans le texte.</p>
 
             <h2>Indices</h2>
 
@@ -164,7 +162,7 @@ export const Task2 = EpicComponent(self => {
 
          <h2>Principe de l’analyse de fréquence</h2>
 
-         <p>On sait qu’en français, les lettres les plus fréquentes sont le e, le a et le s, dans cet ordre. On peut donc en déduire que le symbole le plus fréquent dans un texte chiffré par substitution a de bonnes chances de correspondre à la lettre e, et un peu moins de chances de correspondre à un ‘a’ ou un ‘s’. Au contraire, le symbole le plus fréquent du texte chiffré n’a quasiment aucune chance de correspondre à un ‘k’, qui est la lettre la moins fréquente en français.</p>
+         <p>On sait qu’en français, les lettres les plus fréquentes sont le 'e', le 'a' et le 's', dans cet ordre. On peut donc en déduire que le symbole le plus fréquent dans un texte chiffré par substitution a de bonnes chances de correspondre à la lettre e, et un peu moins de chances de correspondre à un ‘a’ ou un ‘s’. Au contraire, le symbole le plus fréquent du texte chiffré n’a quasiment aucune chance de correspondre à un ‘k’, qui est la lettre la moins fréquente en français.</p>
 
          <p>Pour exploiter ceci, dans l’outil d’édition de la substitution, une barre noire est représentée au dessus de chaque lettre. Sa hauteur représente la fréquence de cette lettre dans le texte chiffré, la barre la plus haute étant au dessus de la lettre la plus fréquente.</p>
 
