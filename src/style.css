@@ -43,6 +43,21 @@
   Tool hints
 
 */
+.hintsDialog {
+  width: 50%;
+  max-width: 400px;
+  background: #f0f0f0;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+}
+.hintsDialog button + button {
+  margin-left: 10px;
+}
 .task-hints .adfgx-subst-label div {
   padding: 0 10px;
 }
@@ -142,10 +157,6 @@ p.hug-bottom {
 }
 .dualtext-line {
   margin-bottom: 6px;
-}
-
-.hintsDialog {
-  float: right;
 }
 
 .dualtext-label, .adfgx-subst-label {
