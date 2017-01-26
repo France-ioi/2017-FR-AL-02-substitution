@@ -27,6 +27,7 @@
   display: block;
   margin: 10px auto;
 }
+
 .taskHeader {
   margin-bottom: 30px;
 }
@@ -43,14 +44,27 @@
   background: #f8f8f8;
   padding: 0 8px;
 }
+
 .panel-heading {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 16px;
   font-weight: bold;
 }
+.panel-body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+p.hug-bottom {
+  margin-bottom: 0;
+}
 .text-bold {
     font-weight: bold;
 }
+
 .adfgx-subst-char,
 .adfgx-cell {
   font-family: "Lucida Console", Monaco, monospace;
@@ -91,12 +105,12 @@
 .adfgx-subst {
   margin-bottom: 10px;
 }
+
 /*
 
   Tool Frequency Analysis
 
 */
-
 
 /* frequency display  */
 .adfgx-subst-pair, .adfgx-subst-pair-rev {
@@ -161,9 +175,6 @@
 /*
 
   Tool Dualtext
-p.hug-bottom {
-  margin-bottom: 0;
-}
 
 */
 .taskDualtext .panel-body {
@@ -200,14 +211,7 @@ p.hug-bottom {
   color: #666;
   text-align: right;
 }
-.panel-body {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+
 .dualtext-label div {
   padding-right: 10px;
 }
