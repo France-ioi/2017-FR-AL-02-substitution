@@ -13,7 +13,7 @@ function generate (params, seed, callback) {
   const maxWords = 400;
   const cipherSubst = shuffle(range(0, 26).toArray(), {copy: true, rng: rng});
   const decipherSubst = inverseSubst(cipherSubst);
-  const clearText = generateRandomText(rng, maxWords, version === 1 ? ' ' : '');
+  const clearText = generateRandomText(rng, maxWords, version === 1 ? ' ' : '').toLowerCase();
   const cipherText = applySubstitution(cipherSubst, clearText);
   const task = {version, cipherText, hints: {}};
   const full_task = {params, seed, clearText, cipherText, cipherSubst, decipherSubst};

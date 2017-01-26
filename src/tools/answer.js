@@ -24,7 +24,9 @@ export default EpicComponent(self => {
             {submitAnswer.feedback > 0 &&
               <span>
                 <i className="fa fa-check" style={{color: 'orange'}}/>
-                {" Votre réponse contient "}{submitAnswer.feedback}{" erreurs."}
+                {" Votre réponse a "}{submitAnswer.feedback}
+                {" erreur"}{submitAnswer.feedback === 1 ? '' : 's'}
+                {"."}
               </span>}
             {submitAnswer.feedback === false &&
               <span>
