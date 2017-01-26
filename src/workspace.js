@@ -66,8 +66,8 @@ export function createWorkspace (task) {
   };
 };
 
-export function updateWorkspace (workspace, dump) {
-  const {editedPairs} = dump;
+export function updateWorkspace (task, workspace, dump) {
+  const editedPairs = filterEditedPairs(task.hints, dump.editedPairs);
   const {hintSubstitution, cipherText} = workspace;
   const editedSubstitution = editSubstitution(hintSubstitution, editedPairs);
   const clearText = applySubstitution(editedSubstitution, cipherText);
@@ -223,4 +223,20 @@ export function exportText (text) {
   return cells.map(function (cell) {
     return 'symbol' in cell ? cell.symbol : symbols[cell.rank]
   }).join('');
+}
+
+function filterEditedPairs (hints, editedPairs) {
+  const reverseHints = new Map();
+  Object.keys(hints).forEach(function (cipherSymbol) {
+    const clearSymbol = hints[cipherSymbol];
+    reverseHints.set(clearSymbol, cipherSymbol);
+  });
+  const validPairs = {};
+  Object.keys(editedPairs).forEach(function (cipherSymbol) {
+    const target = editedPairs[cipherSymbol];
+    if (!reverseHints.has(target.symbol)) {
+      validPairs[cipherSymbol] = target;
+    }
+  });
+  return validPairs;
 }
