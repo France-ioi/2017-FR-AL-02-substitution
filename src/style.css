@@ -99,9 +99,6 @@ p.hug-bottom {
 .hintsDialog button + button {
   margin-left: 10px;
 }
-.task-hints .adfgx-subst-label div {
-  padding: 0 10px;
-}
 .adfgx-subst {
   margin-bottom: 10px;
 }
@@ -185,12 +182,10 @@ p.hug-bottom {
   max-height: 19em;
   overflow: auto;
 }
-.dualtext-block {
+.dualtext-col {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 16px;
   white-space: pre;
-}
-.dualtext-col {
   display: inline-block;
 }
 .dualtext-col .dualtext-top-cell .adfgx-cell,
@@ -219,7 +214,11 @@ p.hug-bottom {
   color: #666;
   text-align: right;
 }
-
+.adfgx-subst-label div,
 .dualtext-label div {
   padding-right: 10px;
+}
+.grillesSection .adfgx-subst-label {
+  vertical-align: top;
+  margin-top: 6px;
 }

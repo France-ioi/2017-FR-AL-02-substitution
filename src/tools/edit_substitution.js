@@ -126,6 +126,10 @@ export default EpicComponent(self => {
                </div>
                <div className='grillesSection'>
                   <div className='adfgx-subst'>
+                     <div className='adfgx-subst-label'>
+                        <div className='adfgx-subst-src'>{"chiffré"}</div>
+                        <div className='adfgx-subst-tgt'>{"clair"}</div>
+                     </div>
                      {cipherFrequencies
                         ? cipherFrequencies.map(stat => renderSubstCell(stat.rank, stat))
                         : mapping.map((_, sourceRank) => renderSubstCell(sourceRank, null))}
