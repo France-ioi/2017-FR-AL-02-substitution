@@ -105,6 +105,15 @@ p.hug-bottom {
 .adfgx-subst {
   margin-bottom: 10px;
 }
+.adfgx-subst-pair .adfgx-subst-src,
+.adfgx-subst-pair-rev .adfgx-subst-src,
+.adfgx-subst-pair-rev .adfgx-subst-tgt {
+  text-align: center;
+}
+.adfgx-q-hint.adfgx-subst-pair-rev .adfgx-subst-src .adfgx-subst-char,
+.adfgx-q-hint.adfgx-subst-pair .adfgx-subst-tgt .adfgx-subst-char {
+  border-color: transparent;
+}
 
 /*
 
@@ -118,19 +127,17 @@ p.hug-bottom {
   width: 22px;
   margin-right: 4px;
 }
-.adfgx-subst-pair .adfgx-subst-src,
-.adfgx-subst-pair-rev .adfgx-subst-src{
-  text-align: center;
-}
 .adfgx-subst-tgt {
   margin-top: 3px;
 }
 .adfgx-subst-pair .adfgx-subst-tgt .adfgx-subst-char,
-.adfgx-subst-pair-rev .adfgx-subst-tgt .adfgx-subst-char {
+.adfgx-subst-pair-rev .adfgx-subst-src .adfgx-subst-char {
   display: block;
   text-align: center;
 }
-.adfgx-subst-pair .adfgx-subst-tgt .adfgx-subst-char {
+.adfgx-subst-pair .adfgx-subst-tgt .adfgx-subst-char,
+.adfgx-subst-pair-rev .adfgx-subst-src .adfgx-subst-char
+ {
   border: 1px solid #ccc;
 }
 .adfgx-subst-tgt-frequency {
@@ -161,15 +168,12 @@ p.hug-bottom {
   cursor: pointer;
 }
 .adfgx-clickable:hover,
-.adfgx-clickable:hover .adfgx-subst-char {
-  background: #ccc;
-}
-
-.adfgx-draggable {
-  cursor: move;
-}
+.adfgx-clickable:hover .adfgx-subst-char,
 .adfgx-draggable:hover {
   background: #ccc;
+}
+.adfgx-draggable {
+  cursor: move;
 }
 
 /*
