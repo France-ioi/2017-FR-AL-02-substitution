@@ -5,7 +5,10 @@ alkindiTaskServer({
   webpackConfig: require('../webpack.config.js'),
   generate: require('./generate'),
   gradeAnswer,
-  grantHint
+  grantHint,
+  serverHook: function (app) {
+    app.use('/images', express.static(path.resolve(path.dirname(__dirname), 'images')));
+  }
 });
 
 function gradeAnswer (full_task, task, answer, callback) {
