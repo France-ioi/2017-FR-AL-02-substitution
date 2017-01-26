@@ -162,13 +162,13 @@ export const Task2 = EpicComponent(self => {
 
          <h2>Principe de l’analyse de fréquence</h2>
 
-         <p>On sait qu’en français, les lettres les plus fréquentes sont le 'e', le 'a' et le 's', dans cet ordre. On peut donc en déduire que le symbole le plus fréquent dans un texte chiffré par substitution a de bonnes chances de correspondre à la lettre e, et un peu moins de chances de correspondre à un ‘a’ ou un ‘s’. Au contraire, le symbole le plus fréquent du texte chiffré n’a quasiment aucune chance de correspondre à un ‘k’, qui est la lettre la moins fréquente en français.</p>
+         <p>On sait qu’en français, les lettres les plus fréquentes sont le 'e', le 'a' et le 's', dans cet ordre. On peut donc en déduire que le symbole le plus fréquent dans un texte chiffré par substitution a de bonnes chances de correspondre à la lettre 'e', et un peu moins de chances de correspondre à un 'a' ou un 's'. Au contraire, le symbole le plus fréquent du texte chiffré n’a quasiment aucune chance de correspondre à un 'k', qui est la lettre la moins fréquente en français.</p>
 
          <p>Pour exploiter ceci, dans l’outil d’édition de la substitution, une barre noire est représentée au dessus de chaque lettre. Sa hauteur représente la fréquence de cette lettre dans le texte chiffré, la barre la plus haute étant au dessus de la lettre la plus fréquente.</p>
 
          <img src="" alt="Visuel de l'outil d'analyse de fréquence" />
 
-         <p>Par ailleurs, en dessous de chaque lettre déchiffrée, on représente par une barre noire la fréquence de cette lettre dans la langue française. Le ‘e’ a donc la barre la plus haute, suivi du ‘a’, etc.</p>
+         <p>Par ailleurs, en dessous de chaque lettre déchiffrée, on représente par une barre noire la fréquence de cette lettre dans la langue française. Le 'e' a donc la barre la plus haute, suivi du 'a', etc.</p>
 
          <p>Enfin, on vous présente au départ les lettres chiffrées dans l’ordre de la plus fréquente dans le texte, à la moins fréquente, tandis que les lettres déchiffrées sont dans l’ordre de leur fréquence dans la langue française.</p>
 
