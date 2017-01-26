@@ -48,7 +48,7 @@ function grantHint (full_task, task, query, callback) {
   }
   task.highestPossibleScore = getHighestPossibleScore(task.version, task.hints);
   callback(null, {success: true, task: task});
-};
+}
 
 function toCipherLetter (rank) {
   return String.fromCharCode(65 + rank);
