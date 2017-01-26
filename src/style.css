@@ -202,15 +202,5 @@ p.hug-bottom {
   user-select: none;
 }
 .dualtext-label div {
-  padding: 0 10px;
-}
-.adfgx-subst-label .adfgx-subst-tgt,
-.task-hints .adfgx-subst-tgt,
-.dualtext-label .adfgx-subst-tgt,
-.dualtext-col .subst-tgt {
-  background-color: #efefef;
-  margin-top: -1px;
-}
-.dualtext-col:last-child .adfgx-cell {
-  margin-right: 0;
+  padding-right: 10px;
 }
