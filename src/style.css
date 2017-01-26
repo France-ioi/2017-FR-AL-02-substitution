@@ -197,12 +197,16 @@ p.hug-bottom {
 .dualtext-col .dualtext-bottom-cell .adfgx-cell {
   border: 1px solid #ccc;
   margin-right: 2px;
+  display: block;
+  width: 17px;
+  line-height: 22px;
 }
 .dualtext-col .dualtext-top-cell .adfgx-cell {
   border-bottom: none;
 }
 .dualtext-col .dualtext-bottom-cell .adfgx-cell {
   border-top: none;
+  margin-top: -1px;
 }
 .dualtext-line {
   margin-bottom: 6px;
@@ -211,7 +215,7 @@ p.hug-bottom {
 .dualtext-label, .adfgx-subst-label {
   font-family: Arial, sans-serif;
   display: inline-block;
-  line-height: 26px;
+  line-height: 22px;
   color: #666;
   text-align: right;
 }
