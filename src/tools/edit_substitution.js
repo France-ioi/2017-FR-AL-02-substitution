@@ -121,9 +121,9 @@ export default EpicComponent(self => {
                {"substitution"}
             </div>
             <div className='panel-body'>
-               <div>
+               {false && <div>
                   <Button onClick={onReset}>{"réinitialiser"}</Button>
-               </div>
+               </div>}
                <div className='grillesSection'>
                   <div className={classnames(['adfgx-subst', targetFrequencies && 'adfgx-have-freqs'])}>
                      <div className='adfgx-subst-label'>
