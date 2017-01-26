@@ -23,8 +23,8 @@ function TaskBundle (bundle, deps) {
 
   bundle.defineView('Task', TaskSelector, Task);
   function TaskSelector (state) {
-    const {task} = state;
-    return {task};
+    const {task, taskBaseUrl} = state;
+    return {version: task.version, baseUrl: taskBaseUrl};
   }
 
   const workspaceOperations = {

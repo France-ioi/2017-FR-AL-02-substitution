@@ -1,13 +1,12 @@
+
 import React from 'react';
 import EpicComponent from 'epic-component';
+import url from 'url';
 
-/*const assetUrl = function (name) {
-   return require(`./assets/${name}`);
-};*/
 export const Task1 = EpicComponent(self => {
 
    self.render = function () {
-      const {task} = self.props;
+      const {baseUrl} = self.props;
       return (
          <div className="taskInstructions">
             <h1>Substitution mono-alphabétique 1</h1>
@@ -127,7 +126,7 @@ export const Task1 = EpicComponent(self => {
 
             <p>Pour modifier la substitution, déplacez une lettre de sa deuxième rangée (lettre déchiffrée) en la glissant sous la lettre chiffrée de votre choix. Ainsi, si vous pensez que chaque lettre 'A' du message chiffré est en fait un 'e' dans le message d’origine, déplacez le 'e' de la rangée du bas pour le placez sous le 'A'.</p>
 
-            <img src="/images/lockTool.png" alt="visuel de l'outil Substitution"/>
+            <img src={url.resolve(baseUrl, "images/lockTool.png")} alt="visuel de l'outil Substitution"/>
 
             <h2>Utilisation des cadenas</h2>
 
@@ -152,6 +151,7 @@ export const Task1 = EpicComponent(self => {
 
 export const Task2 = EpicComponent(self => {
   self.render = function () {
+    const {baseUrl} = self.props;
     return (
       <div className="taskInstructions">
          <h1>Substitution mono-alphabétique 2</h1>
@@ -166,7 +166,7 @@ export const Task2 = EpicComponent(self => {
 
          <p>Pour exploiter ceci, dans l’outil d’édition de la substitution, une barre noire est représentée au dessus de chaque lettre. Sa hauteur représente la fréquence de cette lettre dans le texte chiffré, la barre la plus haute étant au dessus de la lettre la plus fréquente.</p>
 
-         <img src="/images/frequencyAnalysis.png" alt="Visuel de l'outil d'analyse de fréquence" />
+         <img src={url.resolve(baseUrl, "images/frequencyAnalysis.png")} alt="Visuel de l'outil d'analyse de fréquence" />
 
          <p>Par ailleurs, en dessous de chaque lettre déchiffrée, on représente par une barre noire la fréquence de cette lettre dans la langue française. Le 'e' a donc la barre la plus haute, suivi du 'a', etc.</p>
 
@@ -180,10 +180,11 @@ export const Task2 = EpicComponent(self => {
 
 export default EpicComponent(self => {
   self.render = function () {
-    const {task} = self.props;
-    if (task.version == 1) {
-      return <Task1 task={task}/>;
+    const {version, baseUrl} = self.props;
+    switch (version) {
+      case 1: return <Task1 baseUrl={baseUrl}/>;
+      case 2: return <Task2 baseUrl={baseUrl}/>;
+      default: return false;
     }
-    return <Task2 task={task}/>;
-  }
+  };
 });
