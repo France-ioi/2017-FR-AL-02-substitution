@@ -125,7 +125,7 @@ export default EpicComponent(self => {
                   <Button onClick={onReset}>{"réinitialiser"}</Button>
                </div>
                <div className='grillesSection'>
-                  <div className='adfgx-subst'>
+                  <div className={classnames(['adfgx-subst', targetFrequencies && 'adfgx-have-freqs'])}>
                      <div className='adfgx-subst-label'>
                         <div className='adfgx-subst-src'>{"chiffré"}</div>
                         <div className='adfgx-subst-tgt'>{"clair"}</div>
