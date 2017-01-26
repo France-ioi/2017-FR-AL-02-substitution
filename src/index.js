@@ -82,12 +82,12 @@ function TaskBundle (bundle, deps) {
     const target2 = {...editedPairs[key1], symbol: value2};
     editedPairs = {...editedPairs, [key1]: target1, [key2]: target2};
     workspace = updateWorkspace(state.workspace, {editedPairs});
-    return {...state, workspace};
+    return {...state, workspace, isWorkspaceUnsaved: true};
   });
 
   bundle.addReducer('substReset', function (state, action) {
     const workspace = updateWorkspace(state.workspace, {editedPairs: {}});
-    return {...state, workspace};
+    return {...state, workspace, isWorkspaceUnsaved: false};
   });
 
   bundle.addReducer('substLock', function (state, action) {
@@ -102,7 +102,7 @@ function TaskBundle (bundle, deps) {
     }
     editedPairs = {...editedPairs, [sourceSymbol]: target};
     workspace = updateWorkspace(state.workspace, {editedPairs});
-    return {...state, workspace};
+    return {...state, workspace, isWorkspaceUnsaved: true};
   });
 
 
