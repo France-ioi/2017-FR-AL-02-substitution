@@ -127,7 +127,7 @@ export const Task1 = EpicComponent(self => {
 
             <p>Pour modifier la substitution, déplacez une lettre de sa deuxième rangée (lettre déchiffrée) en la glissant sous la lettre chiffrée de votre choix. Ainsi, si vous pensez que chaque lettre 'A' du message chiffré est en fait un 'e' dans le message d’origine, déplacez le 'e' de la rangée du bas pour le placez sous le 'A'.</p>
 
-            <img src="" alt="visuel de l'outil Substitution"/>
+            <img src="/images/lockTool.png" alt="visuel de l'outil Substitution"/>
 
             <h2>Utilisation des cadenas</h2>
 
@@ -166,7 +166,7 @@ export const Task2 = EpicComponent(self => {
 
          <p>Pour exploiter ceci, dans l’outil d’édition de la substitution, une barre noire est représentée au dessus de chaque lettre. Sa hauteur représente la fréquence de cette lettre dans le texte chiffré, la barre la plus haute étant au dessus de la lettre la plus fréquente.</p>
 
-         <img src="" alt="Visuel de l'outil d'analyse de fréquence" />
+         <img src="/images/frequencyAnalysis.png" alt="Visuel de l'outil d'analyse de fréquence" />
 
          <p>Par ailleurs, en dessous de chaque lettre déchiffrée, on représente par une barre noire la fréquence de cette lettre dans la langue française. Le 'e' a donc la barre la plus haute, suivi du 'a', etc.</p>
 
