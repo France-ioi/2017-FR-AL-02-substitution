@@ -220,5 +220,7 @@ function applySubstitution (substitution, inputText) {
 export function exportText (text) {
   const {alphabet, cells} = text;
   const {symbols} = alphabet;
-  return cells.map(cell => symbols[cell.rank]).join('');
+  return cells.map(function (cell) {
+    return 'symbol' in cell ? cell.symbol : symbols[cell.rank]
+  }).join('');
 }
