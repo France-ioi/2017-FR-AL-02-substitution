@@ -94,7 +94,8 @@ export default EpicComponent(self => {
          const sourceSymbol = sourceAlphabet.symbols[sourceRank];
          const targetCell = mapping[sourceRank];
          const targetSymbol = targetAlphabet.symbols[targetCell.rank];
-         const isEditable = targetCell.qualifier !== 'hint';
+         const isLocked = targetCell.qualifier === 'edit';
+         const isEditable = !isLocked && targetCell.qualifier !== 'hint';
          const Target = isEditable ? SubstTarget : BareSubstTarget;
          return (
             <div key={sourceRank} className={classnames(['adfgx-subst-pair', getQualifierClass(targetCell.qualifier)])}>
@@ -108,7 +109,7 @@ export default EpicComponent(self => {
                   </span>
                </div>
                <Target source={sourceSymbol} target={targetCell} targetSymbol={targetSymbol} onDrop={onDrop}
-                  frequency={stat && targetFrequencies[targetCell.rank]} barScale={barScale} onLock={onLock} locked={targetCell.qualifier === 'edit'} />
+                  frequency={stat && targetFrequencies[targetCell.rank]} barScale={barScale} onLock={onLock} locked={isLocked} />
             </div>
          );
       };
