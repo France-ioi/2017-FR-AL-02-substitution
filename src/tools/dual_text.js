@@ -9,7 +9,7 @@ export default EpicComponent(self => {
    self.render = function() {
       const {topText, bottomText, wrapping} = self.props;
       return (
-         <div className='panel panel-default'>
+         <div className='panel panel-default taskDualtext'>
             <div className='panel-heading'>
                {"texte chiffré et déchiffré"}
             </div>
