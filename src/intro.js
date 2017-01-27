@@ -9,7 +9,7 @@ export const Task1 = EpicComponent(self => {
       const {baseUrl} = self.props;
       return (
          <div className="taskInstructions">
-            <h1>Substitution mono-alphabétique 1</h1>
+            <h1>{"B.1 Substitutions : mono-alphabétique avec espaces"}</h1>
             <h2>Méthode utilisée pour chiffrer / déchiffrer un message</h2>
 
             <p>Pour chiffrer un message, on décide de remplacer chaque lettre de l’alphabet par une autre lettre, toujours la même. C’est ce que l’on appelle une substitution.</p>
@@ -156,7 +156,7 @@ export const Task2 = EpicComponent(self => {
     const {baseUrl} = self.props;
     return (
       <div className="taskInstructions">
-         <h1>Substitution mono-alphabétique 2</h1>
+         <h1>{"B.2 Substitutions : mono-alphabétique sans espaces"}</h1>
 
          <p>Ce sujet est similaire au sujet précédent, avec une différence importante : les espaces ont été retirés du texte d’origine. Vous ne pouvez donc pas déterminer simplement où commence et se termine chaque mot du texte.</p>
 
