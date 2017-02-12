@@ -44,7 +44,7 @@ function TaskBundle (bundle, deps) {
   }
 
   function taskUpdated (state) {
-    return {...state, workspace: updateWorkspace(state.task, createWorkspace(state.task), state.workspace)};
+    return {...state, workspace: updateWorkspace(state.task, createWorkspace(state.task), dumpWorkspace(state))};
   }
 
   function workspaceLoaded (state, dump) {
