@@ -1,5 +1,5 @@
 
-module.exports = [
+module.exports.words = [
 [
 "AILE",
 "AUTO",
@@ -1236,3 +1236,16 @@ module.exports = [
 "TRAVAILLER",
 ]
 ];
+
+module.exports.generate = function (rng, maxWords, separator) {
+  const minLength = dictionary[0][0].length;
+  const maxLength = dictionary[dictionary.length - 1][0].length;
+  const words = [];
+  while (words.length < maxWords) {
+    const groupIndex = Math.trunc(rng() * (maxLength - minLength + 1));
+    const groupWords = dictionary[groupIndex];
+    const word = groupWords[Math.trunc(rng() * (groupWords.length + 1))];
+    words.push(word);
+  }
+  return words.join(separator);
+};
