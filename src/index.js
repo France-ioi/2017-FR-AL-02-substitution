@@ -40,20 +40,20 @@ function TaskBundle (bundle, deps) {
   });
 
   function taskLoaded (state) {
-    return {...state, workspace: updateWorkspace(state.task, createWorkspace(state.task), {editedPairs: {}})};
+    const dump = {editedPairs: {}};
+    return {...state, dump, workspace: updateWorkspace(state.task, createWorkspace(state.task), dump)};
   }
 
   function taskUpdated (state) {
-    return {...state, workspace: updateWorkspace(state.task, createWorkspace(state.task), dumpWorkspace(state))};
+    return {...state, workspace: updateWorkspace(state.task, createWorkspace(state.task), state.dump)};
   }
 
   function workspaceLoaded (state, dump) {
-    return {...state, workspace: updateWorkspace(state.task, state.workspace, dump)};
+    return {...state, dump, workspace: updateWorkspace(state.task, state.workspace, dump)};
   }
 
   function dumpWorkspace (state) {
-    const {editedPairs} = state.workspace;
-    return {editedPairs};
+    return state.dump;
   }
 
   function isWorkspaceReady (state) {
@@ -75,23 +75,25 @@ function TaskBundle (bundle, deps) {
       'dismissAnswerFeedback', 'submitAnswer', 'SaveButton')));
 
   bundle.addReducer('substSwapPairs', function (state, action) {
-    let {workspace} = state;
-    let {editedPairs} = state.workspace;
+    let {dump} = state;
+    let {editedPairs} = state.dump;
     const {key1, value1, key2, value2} = action;
     const target1 = {...editedPairs[key2], symbol: value1};
     const target2 = {...editedPairs[key1], symbol: value2};
     editedPairs = {...editedPairs, [key1]: target1, [key2]: target2};
-    workspace = updateWorkspace(state.task, state.workspace, {editedPairs});
-    return {...state, workspace, isWorkspaceUnsaved: true};
+    dump = {editedPairs};
+    const workspace = updateWorkspace(state.task, state.workspace, dump);
+    return {...state, dump, workspace};
   });
 
   bundle.addReducer('substReset', function (state, action) {
-    const workspace = updateWorkspace(state.task, state.workspace, {editedPairs: {}});
-    return {...state, workspace, isWorkspaceUnsaved: false};
+    const dump = {editedPairs: {}}
+    const workspace = updateWorkspace(state.task, state.workspace, dump);
+    return {...state, dump, workspace};
   });
 
   bundle.addReducer('substLock', function (state, action) {
-    let {workspace} = state;
+    let {dump} = state;
     let {editedPairs} = state.workspace;
     const {sourceSymbol, targetSymbol} = action;
     let target = editedPairs[sourceSymbol];
@@ -101,9 +103,9 @@ function TaskBundle (bundle, deps) {
       target = {symbol: targetSymbol, locked: true};
     }
     editedPairs = {...editedPairs, [sourceSymbol]: target};
-    workspace = updateWorkspace(state.task, state.workspace, {editedPairs});
-    return {...state, workspace, isWorkspaceUnsaved: true};
+    dump = {editedPairs};
+    const workspace = updateWorkspace(state.task, state.workspace, dump);
+    return {...state, dump, workspace};
   });
-
 
 };
