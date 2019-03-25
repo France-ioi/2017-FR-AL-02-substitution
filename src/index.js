@@ -21,12 +21,6 @@ export function run (container, options) {
 
 function TaskBundle (bundle, deps) {
 
-  bundle.defineView('Task', TaskSelector, Task);
-  function TaskSelector (state) {
-    const {task, taskBaseUrl} = state;
-    return {version: task.version, baseUrl: taskBaseUrl};
-  }
-
   const workspaceOperations = {
     taskLoaded,
     taskUpdated,
