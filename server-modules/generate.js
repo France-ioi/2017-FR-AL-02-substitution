@@ -7,7 +7,7 @@ const sentences = require('./sentences');
 
 module.exports = generate;
 
-function generate (params, seed, callback) {
+function generate (params, seed) {
   const {version} = params;
   const rng = seedrandom(seed);
   const minLength = version === 1 ? 400 : 2000;
@@ -17,8 +17,8 @@ function generate (params, seed, callback) {
   const clearText = sentences.generate(rng, minLength, maxLength, version == 1).toLowerCase();
   const cipherText = applySubstitution(cipherSubst, clearText);
   const task = {version, cipherText, hints: {}};
-  const full_task = {params, seed, clearText, cipherText, cipherSubst, decipherSubst};
-  callback(null, {task, full_task});
+  const full_task = {params, seed, clearText, cipherSubst, decipherSubst};
+  return {publicData:task, privateData:full_task};
 }
 
 function applySubstitution (subst, clearText) {
