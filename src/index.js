@@ -90,7 +90,7 @@ function getTaskState (state) {
   return {workspace, dump};
 }
 
-function taskStateLoaded (state, {workspace, dump}) {
+function taskStateLoaded (state, {payload: {dump: {workspace, dump}}}) {
   return {
     ...state,
     dump,
