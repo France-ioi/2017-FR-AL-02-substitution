@@ -1,6 +1,5 @@
-
-const cipherAlphabet = makeAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
-const clearAlphabet = makeAlphabet('abcdefghijklmnopqrstuvwxyz'.split(''));
+const cipherAlphabet = makeAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
+const clearAlphabet = makeAlphabet("abcdefghijklmnopqrstuvwxyz".split(""));
 
 const referenceFrequencies = [
   0.0812034849,
@@ -14,7 +13,7 @@ const referenceFrequencies = [
   0.0757827046,
   0.0054442497,
   0.0004856863,
-  0.0545455020,
+  0.054545502,
   0.0296764091,
   0.0709375766,
   0.0540474291,
@@ -30,26 +29,31 @@ const referenceFrequencies = [
   0.0030803592,
   0.0013644851
 ];
-const referenceRanks =
-  referenceFrequencies.map((frequency, rank) => {return {frequency, rank};})
-    .sort(function (s1, s2) {
-      const f1 = s1.frequency, f2 = s2.frequency;
-      return f1 > f2 ? -1 : (f1 < f2 ? 1 : 0);
-    });
+const referenceRanks = referenceFrequencies
+  .map((frequency, rank) => {
+    return {frequency, rank};
+  })
+  .sort(function (s1, s2) {
+    const f1 = s1.frequency,
+      f2 = s2.frequency;
+    return f1 > f2 ? -1 : f1 < f2 ? 1 : 0;
+  });
 
 export function createWorkspace (task) {
   const cipherText = parseText(cipherAlphabet, task.cipherText);
   const wrapping = getTextWrapping(cipherText, 35);
   let cipherFrequencies, targetFrequencies, mapping;
   if (task.version === 1) {
-    mapping = cipherAlphabet.symbols.map((_, rank) => {return {rank, qualifier: 'unknown'};});
+    mapping = cipherAlphabet.symbols.map((_, rank) => {
+      return {rank, qualifier: "unknown"};
+    });
   } else {
     targetFrequencies = referenceFrequencies;
     cipherFrequencies = getFrequencies(cipherText);
     mapping = new Array(cipherAlphabet.size);
     referenceRanks.forEach(function (clearStat, index) {
       const cipherStat = cipherFrequencies[index];
-      mapping[cipherStat.rank] = {rank: clearStat.rank, qualifier: 'unknown'};
+      mapping[cipherStat.rank] = {rank: clearStat.rank, qualifier: "unknown"};
     });
   }
   const baseSubstitution = {
@@ -60,32 +64,28 @@ export function createWorkspace (task) {
   };
   const hintSubstitution = applyHints(baseSubstitution, task.hints);
   return {
-    cipherText, wrapping,
-    cipherFrequencies, targetFrequencies,
+    cipherText,
+    wrapping,
+    cipherFrequencies,
+    targetFrequencies,
     hintSubstitution
   };
-};
-
+}
 export function updateWorkspace (task, workspace, dump) {
   const editedPairs = filterEditedPairs(task.hints, dump.editedPairs);
   const {hintSubstitution, cipherText} = workspace;
   const editedSubstitution = editSubstitution(hintSubstitution, editedPairs);
   const clearText = applySubstitution(editedSubstitution, cipherText);
-  return {...workspace,
-    editedPairs,
-    editedSubstitution,
-    clearText,
-    ready: true
-  };
-};
+  return {...workspace, editedPairs, editedSubstitution, clearText};
+}
 
 function makeAlphabet (symbols) {
-   const size = symbols.length;
-   var ranks = {};
-   for (var iSymbol = 0; iSymbol < size; iSymbol++) {
-      ranks[symbols[iSymbol]] = iSymbol;
-   }
-   return {symbols, size, ranks};
+  const size = symbols.length;
+  var ranks = {};
+  for (var iSymbol = 0; iSymbol < size; iSymbol++) {
+    ranks[symbols[iSymbol]] = iSymbol;
+  }
+  return {symbols, size, ranks};
 }
 
 function parseText (alphabet, textStr) {
@@ -119,8 +119,9 @@ function getFrequencies (text) {
     s.percentage = (s.frequency * 100).toFixed(1);
   });
   stats.sort(function (s1, s2) {
-    const c1 = s1.count, c2 = s2.count;
-    return c1 > c2 ? -1 : (c1 < c2 ? 1 : 0);
+    const c1 = s1.count,
+      c2 = s2.count;
+    return c1 > c2 ? -1 : c1 < c2 ? 1 : 0;
   });
   return stats;
 }
@@ -140,7 +141,7 @@ function getTextWrapping (text, maxWidth) {
       col = iCell - startCol;
     }
     const cell = cells[iCell];
-    if ('rank' in cell) {
+    if ("rank" in cell) {
       lastNonAlphabetBeforeLetter = lastNonAlphabet;
     } else {
       lastNonAlphabet = iCell;
@@ -168,16 +169,29 @@ function applyHints (substitution, hints) {
     const sourceRank = sourceAlphabet.ranks[sourceLetter];
     const targetLetter = hints[sourceLetter];
     const targetRank = targetAlphabet.ranks[targetLetter];
-    modifySubstitution(mapping, reverse, sourceRank, targetRank, 'hint');
+    modifySubstitution(mapping, reverse, sourceRank, targetRank, "hint");
   });
   return {sourceAlphabet, targetAlphabet, mapping, reverse};
 }
 
-function modifySubstitution (mapping, reverse, sourceRank, targetRank, qualifier) {
+function modifySubstitution (
+  mapping,
+  reverse,
+  sourceRank,
+  targetRank,
+  qualifier
+) {
   const oldTarget = mapping[sourceRank];
   const oldSource = reverse[targetRank];
-  if (oldTarget.qualifier !== 'unknown' || oldSource.qualifier !== 'unknown') {
-    console.log('skipped', oldSource, sourceRank, oldTarget, targetRank, qualifier);
+  if (oldTarget.qualifier !== "unknown" || oldSource.qualifier !== "unknown") {
+    console.log(
+      "skipped",
+      oldSource,
+      sourceRank,
+      oldTarget,
+      targetRank,
+      qualifier
+    );
     return;
   }
   /* Perform a swap in mapping so that mapping[sourceRank].rank === targetRank. */
@@ -201,14 +215,20 @@ function editSubstitution (inputSubstitution, editedPairs) {
     const target = editedPairs[sourceSymbol];
     const sourceRank = sourceAlphabet.ranks[sourceSymbol];
     const targetRank = targetAlphabet.ranks[target.symbol];
-    modifySubstitution(newMapping, newReverse, sourceRank, targetRank, target.locked ? 'edit' : 'unknown');
+    modifySubstitution(
+      newMapping,
+      newReverse,
+      sourceRank,
+      targetRank,
+      target.locked ? "edit" : "unknown"
+    );
   });
   return {sourceAlphabet, targetAlphabet, mapping: newMapping};
 }
 
 function applySubstitution (substitution, inputText) {
   const targetCells = inputText.cells.map(function (cell) {
-    if ('rank' in cell) {
+    if ("rank" in cell) {
       return substitution.mapping[cell.rank];
     } else {
       return cell;
@@ -220,9 +240,11 @@ function applySubstitution (substitution, inputText) {
 export function exportText (text) {
   const {alphabet, cells} = text;
   const {symbols} = alphabet;
-  return cells.map(function (cell) {
-    return 'symbol' in cell ? cell.symbol : symbols[cell.rank]
-  }).join('');
+  return cells
+    .map(function (cell) {
+      return "symbol" in cell ? cell.symbol : symbols[cell.rank];
+    })
+    .join("");
 }
 
 function filterEditedPairs (hints, editedPairs) {

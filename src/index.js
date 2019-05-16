@@ -78,24 +78,31 @@ function taskRefreshReducer (state, _action) {
 
 function getTaskAnswer (state) {
   const clearText = exportText(state.workspace.clearText);
-  return {clearText};
+  const dump = state.dump;
+  return {clearText, dump};
 }
 
-function taskAnswerLoaded (state, _action) {
-  return state;
-}
-
-function getTaskState (state) {
-  const {workspace, dump} = state;
-  return {workspace, dump};
-}
-
-function taskStateLoaded (state, {payload: {dump: {workspace, dump}}}) {
+function taskAnswerLoaded (
+  state,
+  {
+    payload: {
+      answer: {dump}
+    }
+  }
+) {
   return {
     ...state,
     dump,
-    workspace: updateWorkspace(state.taskData, workspace, dump)
+    workspace: updateWorkspace(state.taskData, state.workspace, dump)
   };
+}
+
+function getTaskState (_state) {
+  return {};
+}
+
+function taskStateLoaded (state, {payload: {_dump}}) {
+  return state;
 }
 
 export function run (container, options) {
